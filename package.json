@@ -1,0 +1,22 @@
+{
+  "name": "cramsesh",
+  "version": "1.0.0",
+  "description": "Flashcard web application",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/noe-alejandro/CramSesh.git"
+  },
+  "author": "Noe Rojas",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/noe-alejandro/CramSesh/issues"
+  },
+  "homepage": "https://github.com/noe-alejandro/CramSesh#readme",
+  "dependencies": {
+    "express": "^4.14.1"
+  }
+}

@@ -17,6 +17,18 @@
   },
   "homepage": "https://github.com/noe-alejandro/CramSesh#readme",
   "dependencies": {
-    "express": "^4.14.1"
+    "bcryptjs": "latest",
+    "body-parser": "latest",
+    "connect-flash": "latest",
+    "cookie-parser": "latest",
+    "ejs": "latest",
+    "express": "latest",
+    "express-messages": "latest",
+    "express-session": "latest",
+    "express-validator": "latest",
+    "mongoose": "latest",
+    "passport": "latest",
+    "passport-http": "latest",
+    "passport-local": "latest"
   }
 }

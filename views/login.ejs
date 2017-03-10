@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Crash-Sesh</title>
+  </head>
+  <body>
+    <h1>User Login</h1>
+    <nav>
+      <ul>
+        <li><a href="/">Home</a></li>
+        <li><a href="/users/register">Register</a></li>
+        <li><a href="/users/login">Login</a></li>
+      </ul>
+    </nav>
+    <% var success_msg; %>
+    <% if(success_msg) { %>
+        <div class="alert alert-success"><%=success_msg%></div>
+    <%}%>
+    <br>
+    <form method="post" action="/users/login">
+      <label for="username">Username:</label>
+      <input type="text" id="username" name="username" maxlength="30"><br><br>
+      <label for="password">Password:</label>
+      <input type="password" id="password" name="password" maxlength="30"><br><br>
+      <input type="submit" value="Enter">
+    </form>
+    <script
+      src="https://code.jquery.com/jquery-3.1.1.js"
+      integrity="sha256-16cdPddA6VdVInumRGo6IbivbERE8p7CQR3HzTBuELA="
+      crossorigin="anonymous">
+    </script>
+  </body>
+</html>

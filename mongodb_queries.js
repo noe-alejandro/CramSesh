@@ -34,15 +34,14 @@ db.flashcards.update(
 */
 
 db.flashcards.update(
-  { owner: "noe1", subject: "CS" },
+  { owner: "noe1", subject: "fossil watch" },
   {
     $push:
     {
       cards:
       {
         front: "Who was responsible for the Apollo missions software?",
-        back: "Margrette Hamilton",
-        countID: 3
+        back: "Margrette Hamilton"
       }
     }
   }

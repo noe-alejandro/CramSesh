@@ -18,6 +18,7 @@
 
     <!-- Custom styles for this template -->
     <link href="css/starter-template.css" rel="stylesheet">
+    <link href="css/createflashcards.css" rel="stylesheet">
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -48,15 +49,6 @@
       </div>
     </nav>
     <main>
-      <!-- <div id="createDeckContainer" class="container">
-        <div class="starter-template">
-          <h1>Create a Deck of Cards</h1>
-          <label class="lead">Enter the deck name:<br>
-            <input type="text" class="form-control" placeholder="Subject" aria-describedby="sizing-addon2">
-          </label>
-        </div>
-      </div>
-      -->
       <div id="createDeckContainer">
         <div class="container">
           <div class="starter-template">
@@ -65,23 +57,37 @@
         </div>
         <div class="container container-table">
           <div class="row vertical-center-row">
-            <div class="text-center col-md-4 col-md-offset-4">
+            <div class="text-center col-md-6 col-md-offset-3">
 
+              <%
+                var deck_saved;
+                var card_saved;
+                var subject;
+              %>
+              <% if(deck_saved) { %>
+                  <div class="alert alert-success fade in"><%=deck_saved%></div>
+              <%}%>
+              <% if(card_saved) { %>
+                  <div class="alert alert-info fade in"><%=card_saved%></div>
+              <%}%>
+
+            <h3>Your deck name: <span id="subjectNameColor"><%=subject%></span></h3>
+            </div>
+            <div class="text-center col-md-6 col-md-offset-3">
               <form method="post" class="form" action="/createflashcards">
                 <div class="form-group">
-                  <label class="lead">Enter the front information</label>
-                  <textarea class="form-control" type="text" name="front" placeholder="Front"></textarea>
+                  <label class="lead">Front Information:</label>
+                  <textarea rows="10" class="form-control" type="text" name="front" placeholder="Front"></textarea>
                 </div>
                 <div class="form-group">
-                  <label class="lead">Enter the back information:</label>
-                  <textarea class="form-control" type="text" name="back" placeholder="Back"></textarea>
+                  <label class="lead">Back Information:</label>
+                  <textarea rows="10" class="form-control" type="text" name="back" placeholder="Back"></textarea>
                 </div>
                 <div class="form-group">
-                  <input id="createFlashcard" type="submit" class="btn btn-primary btn-lg btn-block" value="Create Flashcard">
-                  <input id="done" type="submit" class="btn btn-primary btn-lg btn-block" value="Done">
+                  <input id="createFlashcard" type="submit" class="btn btn-primary btn-lg" value="Create Flashcard">
+                  <input id="done" type="submit" class="btn btn-primary btn-lg" value="Done">
                 </div>
               </form>
-
             </div>
           </div>
         </div>

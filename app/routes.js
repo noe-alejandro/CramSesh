@@ -1,7 +1,9 @@
 module.exports = function(app, passport, LocalStrategy) {
 
   var User = require('./models/user');
-  var Deck = require('./models/flashcards.js')
+  var Deck = require('./models/flashcards.js');
+
+  var subjectName;
 
   app.get('/', function(req, res) {
     res.render('index.ejs');
@@ -28,32 +30,36 @@ module.exports = function(app, passport, LocalStrategy) {
   });
 
   app.get('/createdeck', function(req, res) {
-
-    console.log("Hello from create subject");
     res.render('createdeck.ejs');
   });
 
   app.post('/createdeck', function(req, res) {
 
-    var subjectName = req.body.deckName;
+    subjectName = req.body.deckName;
     var username = req.user.username;
 
     Deck.saveDeckName(username, subjectName, function(result) {
 
     });
 
-    var success_msg = "Your deck has been created.";
-    res.render('createflashcards.ejs', {success_msg: success_msg, subject: subjectName});
+    var deck_saved = "Your deck has been created.";
+    res.render('createflashcards.ejs', {deck_saved: deck_saved, subject: subjectName});
   });
 
   app.post('/createflashcards', function(req, res) {
 
     var front = req.body.front;
     var back = req.body.back;
+    console.log("Deck name in post: /createflashcards " + subjectName);
+    var username = req.user.username;
 
-    console.log(front + " " + back);
-    res.render('createflashcards.ejs');
+    Deck.saveFlashcard(username, subjectName, front, back, function() {
 
+    });
+
+
+    var card_saved = "Your flashcard has been saved!";
+    res.render('createflashcards.ejs', {card_saved: card_saved, subject: subjectName});
   });
 
   app.post('/users/register', function(req, res) {
@@ -154,28 +160,6 @@ module.exports = function(app, passport, LocalStrategy) {
     res.render('dashboard.ejs');
   });
 
-  // DECK NAME
-  /*app.post('/process/deckname', function(req, res) {
-
-    var username = req.user.username;
-    var deckName = req.body;
-    console.log("in route /process/deckname: " + deckName.subject);
-
-    Deck.saveDeckName(username, deckName.subject, function(result) {
-      console.log(result);
-    });
-
-    var front = "";
-    var back = "";
-
-    Deck.saveFlashcard(username, deckName, front, back, function(result) {
-      console.log(result);
-    });
-
-    //res.send({"message": 'Your card has been saved!'});
-
-  });*/
-
   function ensureAuthenticated(req, res, next) {
     if(req.isAuthenticated()) {
       return next();
@@ -189,7 +173,7 @@ module.exports = function(app, passport, LocalStrategy) {
 
   app.get('/logout', function(req, res) {
     req.logout();
-    var success_msg = 'You are securely logged out';
+    var success_msg = 'You are securely logged out.';
     res.render('login.ejs', {success_msg: success_msg});
   });
 }

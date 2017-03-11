@@ -8,7 +8,6 @@ var FlashcardSchema = mongoose.Schema({
     {
       front: String,
       back: String,
-      cardID: Number
     }
   ]
 });
@@ -16,34 +15,32 @@ var FlashcardSchema = mongoose.Schema({
 var Flashcard = module.exports = mongoose.model('Flashcard', FlashcardSchema);
 
 Flashcard.saveDeckName = function(username, subjectName, callback) {
-
   var deck = new Flashcard();
-
   deck.owner = username;
   deck.subject = subjectName;
   deck.save();
+
 };
 
 Flashcard.saveFlashcard = function(username, subjectName, front, back, callback) {
 
+  console.log(".......in the flashcards.js model......")
+  console.log(username);
+  console.log(subjectName);
+  console.log(front);
+  console.log(back);
 
-  // Find the most recent card in the deck.
-  /*deck.findOne().sort({'coutID': -1}).exe(function(err, data) {
-
+  Flashcard.findOne({owner: username, subject:subjectName}, function(err, data) {
     if(err) {
-      console.log('Error: not found!');
+      console.log(err);
     }
     else {
+      data.cards.push({front: front, back: back});
+      data.save(function(err) {
+        if(err) {
+          console.log(err);
+        }
+      });
     }
-  });*/
-
-  /*deck.findOne(
-    {
-      owner: username,
-      subject: subjectName
-    },
-    {
-
-    }
-  )*/
+  });
 };

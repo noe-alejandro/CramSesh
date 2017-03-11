@@ -19,6 +19,14 @@ module.exports = function(app, passport, LocalStrategy) {
     res.render('register.ejs');
   });
 
+  app.get('/study', function(req, res) {
+    res.render('study.ejs');
+  });
+
+  app.get('/editdecks', function(req, res) {
+    res.render('editdecks.ejs');
+  });
+
   app.get('/createdeck', function(req, res) {
 
     console.log("Hello from create subject");
@@ -50,24 +58,14 @@ module.exports = function(app, passport, LocalStrategy) {
 
   app.post('/users/register', function(req, res) {
 
-    var firstName = req.body.firstname;
-    var lastName = req.body.lastname;
+    var fullname = req.body.fullname;
     var email =  req.body.email;
     var confirmEmail = req.body.confirmEmail;
     var username = req.body.username;
     var password = req.body.password;
     var confirmPassword = req.body.confirmPassword;
 
-    console.log("first name: " + firstName);
-    console.log("last name: " + lastName);
-    console.log("email: " + email);
-    console.log("emailConfirm: " + confirmEmail);
-    console.log("username: " + username);
-    console.log("password: " + password);
-    console.log("password confirm: " + confirmPassword);
-
-    req.checkBody('firstname', 'First name is required.').notEmpty();
-    req.checkBody('lastname', 'Last name is required.').notEmpty();
+    req.checkBody('fullname', 'Full name is required.').notEmpty();
     req.checkBody('email', 'Email is required.').notEmpty();
     req.checkBody('email', 'Email is not valid.').isEmail();
     req.checkBody('confirmEmail', 'Emails do not match.').equals(req.body.email);
@@ -88,8 +86,7 @@ module.exports = function(app, passport, LocalStrategy) {
       console.log('No Errors!');
 
       var newUser = new User({
-        first_name: firstName,
-        last_name: lastName,
+        full_name: fullname,
         email: email,
         username: username,
         password: password
@@ -102,10 +99,6 @@ module.exports = function(app, passport, LocalStrategy) {
 
       var success_msg = 'You are now registered and can login.';
       res.render('login.ejs', {success_msg: success_msg});
-
-      //req.flash('success_msg', 'You are now registered and can login');
-      //res.redirect('/users/login');
-
     }
   });
 
@@ -189,15 +182,14 @@ module.exports = function(app, passport, LocalStrategy) {
     }
     else {
       console.log("User is attempting to access dashboard without logging in.");
-      var error_message = 'You are not logged in';
+      var error_message = 'You are not logged in.';
       res.render('login.ejs', {error_message: error_message});
     }
   }
 
   app.get('/logout', function(req, res) {
     req.logout();
-
-    //req.flash('success_msg', 'You are logged out');
-    res.redirect('/users/login');
+    var success_msg = 'You are securely logged out';
+    res.render('login.ejs', {success_msg: success_msg});
   });
 }

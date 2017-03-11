@@ -12,10 +12,7 @@ var UserSchema = mongoose.Schema({
   email: {
     type: String
   },
-  first_name: {
-    type: String
-  },
-  last_name: {
+  full_name: {
     type: String
   }
 });

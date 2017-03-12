@@ -146,7 +146,7 @@ module.exports = function(app, passport, LocalStrategy) {
   });
 
   app.post('/users/login',
-    passport.authenticate('local', {successRedirect:'/dashboard', failureRedirect:'/users/login',failureFlash: true}),
+    passport.authenticate('local', {successRedirect:'/dashboard', failureRedirect:'/users/login', failureFlash: true}),
     function(req, res) {
       res.redirect('/dashboard');
     }

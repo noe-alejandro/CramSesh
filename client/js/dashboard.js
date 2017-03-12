@@ -22,13 +22,13 @@ var $main = function () {
       $('#createCardContainer').show('slow');
 
       $.ajax({
-        method : 'POST',
-        url : '/process/deckname',
+        method : 'POST', // TYPE OF METHOD
+        url : '/process/deckname', // THE ROUTE
         contentType : 'application/json',
-        data : JSON.stringify(deckSubject),
-        dataType : 'json',
+        data : JSON.stringify(deckSubject), // TYPE OF DATA TO SEND
+        dataType : 'json', // TYPE OF DATA TO EXPECT BACK
         success : function(response) {
-          console.log(response.message);
+          console.log(response.message); // THE RESPONSE WILL HAVE CONTAIN ALL THE DATA
         }
       });
 

@@ -1,3 +1,15 @@
 #subjectNameColor{
   color: #2247E1;
 }
+
+#frontarea{
+  background-image: url('../img/notecard_white.jpeg');
+  font-weight: bold;
+  font-size: 20px;
+}
+
+#backarea {
+  background-image: url('../img/notecard_white.jpeg');
+  font-weight: bold;
+  font-size: 20px;
+}

@@ -1,3 +1,4 @@
+// Requiing Node Modules
 var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
@@ -12,6 +13,9 @@ var mongoose = require('mongoose');
 
 // Initiate Application
 var app = express();
+
+// Initiate Flash Messaging
+app.use(flash());
 
 // Database Connection
 mongoose.connect('mongodb://localhost/CramSesh');

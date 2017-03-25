@@ -68,17 +68,23 @@ app.use(expressValidator({
 // Connect Flash
 app.use(flash());
 
-// Connecting Routes
-require('./app/routes.js')(app, passport, LocalStrategy);
-
 // Global Variables
 app.use(function (req, res, next) {
   res.locals.success_msg = req.flash('success_msg');
   res.locals.error_msg = req.flash('error_msg');
   res.locals.error = req.flash('error');
   res.locals.user = req.user || null;
+
+  // Flashcard related
+  res.locals.subject_name = req.flash('subject_name');
+  res.locals.flashcard_msg = req.flash('flashcard_msg');
+  res.locals.deck_msg = req.flash('deck_msg');
+
   next();
 });
+
+// Connecting Routes
+require('./app/routes.js')(app, passport, LocalStrategy);
 
 // Creating Port and Server
 var port = process.env.PORT || 3000;

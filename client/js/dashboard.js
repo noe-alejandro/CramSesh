@@ -1,88 +1,49 @@
 var $main = function () {
+  $.ajax({
+    method : 'GET',
+    url : '/viewdeck',
+    contentType : 'application/json',
+    dataType : 'json',
+    success : function(data) {
+      // Random Numbers from 1 to 10
+      var randMax = 2;
+      var rand = Math.floor((Math.random() * randMax) + 1);
+      //var type = ['english', 'science', 'history', 'math'];
+      var len = data.subjects.length;
 
-  $('#createDeckContainer').hide();
-  $('#createCardContainer').hide();
-
-  $('#createDeck').on('click', function () {
-
-    $('#createNewFlashcardDeckButton').hide('slow');
-    $('#createDeckContainer').show('slow');
-
-    $('#submitDeckName').on('click', function () {
-
-      var deckName = $('#deckName').val();
-
-      // Creating JSON object to store into the database
-      var deckSubject = {"subject": deckName};
-
-      var insertDeckName = $('<p>').text(deckName);
-      $('#displayDeckName').append(insertDeckName);
-
-      $('#createDeckContainer').hide('slow');
-      $('#createCardContainer').show('slow');
-
-      $.ajax({
-        method : 'POST', // TYPE OF METHOD
-        url : '/process/deckname', // THE ROUTE
-        contentType : 'application/json',
-        data : JSON.stringify(deckSubject), // TYPE OF DATA TO SEND
-        dataType : 'json', // TYPE OF DATA TO EXPECT BACK
-        success : function(response) {
-          console.log(response.message); // THE RESPONSE WILL HAVE CONTAIN ALL THE DATA
+      if(data.subjects.length === 0) {
+        var noSubjects = "No decks to display. Create some flashcards in the create flashcards area."
+        console.log(noSubjects);
+      }
+      else {
+        for(var i = 0; i < len; i++) {
+          // DISPLAY ALL AVAILABLE DECKS
+          var startDivTag = '<div class="col-xs-6 col-sm-3 placeholder">';
+          var imageTag = '<img src="img/sub_types/1.png" width="200" height="200" class="img-responsive" alt="Generic placeholder thumbnail">';
+          var subjectLink = '<h4><a class="sub" href="#">' + data.subjects[i] + '</a></h4>';
+          var endDivTag = '</div>';
+          var entry = startDivTag + imageTag + subjectLink + endDivTag;
+          $('#insert-subjects').append(entry);
         }
-      });
-
-      $('#createNewCard').on('click', function() {
-        // SUBMIT QUERY TO DATABSE
-        // Re-render the FRONT and BACK Portion
-
-        var front = $('#front').val();
-        var back = $('#back').val();
-
-        console.log("front: " + front);
-        console.log("back: " + back);
-        console.log("deck name: " + deckName);
-
-        var flashCard = {
-          "subject" : deckName,
-          "side" : {
-            "front": front,
-            "back" : back
-          }
-        };
-
+      }
+      // SEND THE SELECTED DECK FOR SERVER PROCESSING
+      $('.sub').on('click', function(event) {
+        console.log($(this).html());
+        var data = {
+          deckname: $(this).html()
+        }
         $.ajax({
           method : 'POST',
-          url : '/process/cardinfo',
+          url : '/viewflashcards',
+          data: JSON.stringify(data),
           contentType : 'application/json',
-          data : JSON.stringify(flashCard),
           dataType : 'json',
-          success : function(response) {
-            console.log(response.message);
-            var savedCardConfirm = $('<p>').text(response.message);
-            $('#cardStatus').append(savedCardConfirm);
+          success : function(data) {
+            console.log(data);
           }
         });
-
-        $('#front').val('');
-        $('#back').val('');
       });
-
-      //DONE BUTTON --- NEED TO FIGURE THIS OUT ----
-
-      /*$('#done').on('click', function() {
-        $('#createDeckContainer').hide('slow');
-        $('#createCardContainer').hide('slow');
-        $('#createNewFlashcardDeckButton').show('slow');
-
-
-        $('#front').val('');
-        $('#back').val('');
-        //SUBMIT QUERY TO DATABASE
-        // Re-renderr the dashboard and display the new deck.
-      });*/
-    });
+    }
   });
 };
-
 $(document).ready($main);

@@ -2,39 +2,130 @@ module.exports = function(app, passport, LocalStrategy) {
 
   var User = require('./models/user');
   var Deck = require('./models/flashcards.js');
-
   var subjectName;
+
+  // Initiate PassportJS with the LocalStrategy
+  passport.use(new LocalStrategy(
+    function(username, password, done) {
+      //console.log(username);
+     User.getUserByUsername(username, function(err, user) {
+      if(err) throw err;
+      if(!user) {
+        return done(null, false, {message: 'Unknown User'});
+      }
+
+      User.comparePassword(password, user.password, function(err, isMatch) {
+        if(err) throw err;
+        if(isMatch) {
+          return done(null, user);
+        }
+        else {
+          return done(null, false, {message: 'Invalid password'});
+        }
+      });
+    });
+  }));
+
+  passport.serializeUser(function(user, done) {
+    done(null, user.id);
+  });
+
+  passport.deserializeUser(function(id, done) {
+    User.getUserById(id, function(err, user) {
+      done(err, user);
+    });
+  });
+
+  function ensureAuthenticated(req, res, next) {
+    if(req.isAuthenticated()) {
+      return next();
+    }
+    else {
+      console.log('User is attempting to access dashboard without logging in.');
+      req.flash('error_msg', 'You are not logged in.');
+      res.redirect('/users/login');
+    }
+  }
+
+  // ******************************
+  // ******** GET ROUTES **********
+  // ******************************
 
   app.get('/', function(req, res) {
     res.render('index.ejs');
+  });
+
+  app.get('/about', function(req, res) {
+    res.render('about.ejs');
   });
 
   app.get('/contact', function(req, res) {
     res.render('contact.ejs');
   });
 
-  app.get('/about', function(req, res) {
+  app.get('/createdeck', ensureAuthenticated, function(req, res) {
+    res.render('createdeck.ejs');
+  });
 
-    res.render('about.ejs');
+  app.get('/createflashcards', ensureAuthenticated, function(req, res) {
+    res.render('createflashcards.ejs');
+  });
+
+  app.get('/dashboard', ensureAuthenticated, function(req, res) {
+    res.render('dashboard.ejs');
+  });
+
+  app.get('/editdecks', ensureAuthenticated, function(req, res) {
+    res.render('editdecks.ejs');
+  });
+
+  app.get('/logout', function(req, res) {
+    req.logout();
+    req.flash('success_msg','You are securely logged out.');
+    res.redirect('/users/login');
+  });
+
+  app.get('/profile', ensureAuthenticated, function(req, res) {
+    res.render('userprofile.ejs');
+  });
+
+  app.get('/study', ensureAuthenticated, function(req, res) {
+    res.render('study.ejs');
+  });
+
+  app.get('/users/login', function(req, res) {
+    res.render('login.ejs');
   });
 
   app.get('/users/register', function(req, res) {
     res.render('register.ejs');
   });
 
-  app.get('/study', function(req, res) {
-    res.render('study.ejs');
+  app.get('/viewdeck', function(req, res) {
+    var username = req.user.username;
+    Deck.getDecks(username, function(err, data) {
+      if(err) {
+        console.log(err);
+      }
+      else {
+        var len = data.length;
+        var subjectsArray = [];
+
+        for(var i = 0; i < len; ++i) {
+          console.log(data[i].subject);
+          subjectsArray.push(data[i].subject);
+        }
+      }
+      res.send({"subjects" : subjectsArray});
+    });
   });
 
-  app.get('/editdecks', function(req, res) {
-    res.render('editdecks.ejs');
-  });
 
-  app.get('/createdeck', function(req, res) {
-    res.render('createdeck.ejs');
-  });
 
-  app.post('/createdeck', function(req, res) {
+  // ******************************
+  // ******** POST ROUTES *********
+  // ******************************
+  app.post('/createdeck', ensureAuthenticated, function(req, res) {
 
     subjectName = req.body.deckName;
     var username = req.user.username;
@@ -43,24 +134,47 @@ module.exports = function(app, passport, LocalStrategy) {
 
     });
 
-    var deck_saved = "Your deck has been created.";
-    res.render('createflashcards.ejs', {deck_saved: deck_saved, subject: subjectName});
+    req.flash('deck_msg', 'Your deck has been created!');
+    res.render('createflashcards.ejs',
+      {
+        subject: subjectName,
+        deck_msg: req.flash('deck_msg')
+      }
+    );
   });
 
-  app.post('/createflashcards', function(req, res) {
+  app.post('/createflashcards', ensureAuthenticated, function(req, res) {
 
     var front = req.body.front;
     var back = req.body.back;
-    console.log("Deck name in post: /createflashcards " + subjectName);
     var username = req.user.username;
 
-    Deck.saveFlashcard(username, subjectName, front, back, function() {
+    // NOTE: Consider single or double sided flashcards, future feature.
+    if(front !== "" || back !== "") {
 
-    });
+      Deck.saveFlashcard(username, subjectName, front, back, function() {
+      });
 
+      req.flash('flashcard_msg', 'Your flashcard has been saved!');
+      res.render('createflashcards.ejs',
+        {
+          subject: subjectName,
+          flashcard_msg: req.flash('flashcard_msg')
+        }
+      );
+    }
+    else {
 
-    var card_saved = "Your flashcard has been saved!";
-    res.render('createflashcards.ejs', {card_saved: card_saved, subject: subjectName});
+      if(front === "" && back === "") {
+        // BOTH CARDS ARE EMTPY
+      }
+      else if(front === "") {
+        // ONLY FRONT CARD EMPTY
+      }
+      else if(back === "") {
+        // ONLY BACK CARD EMPTY
+      }
+    }
   });
 
   app.post('/users/register', function(req, res) {
@@ -104,46 +218,9 @@ module.exports = function(app, passport, LocalStrategy) {
         console.log(user);
       });
 
-      var success_msg = 'You are now registered and can login.';
-      res.render('login.ejs', {success_msg: success_msg});
+      req.flash('success_msg','You are now registered and can login.');
+      res.redirect('/users/login');
     }
-  });
-
-  app.get('/users/login', function(req, res) {
-    res.render('login.ejs');
-  });
-
-  passport.use(new LocalStrategy(
-    function(username, password, done) {
-      //console.log(username);
-     User.getUserByUsername(username, function(err, user) {
-      if(err) throw err;
-      if(!user) {
-        return done(null, false, {message: 'Unknown User'});
-      }
-
-      User.comparePassword(password, user.password, function(err, isMatch) {
-
-        if(err) throw err;
-
-        if(isMatch) {
-          return done(null, user);
-        }
-        else {
-          return done(null, false, {message: 'Invalid password'});
-        }
-      });
-    });
-  }));
-
-  passport.serializeUser(function(user, done) {
-    done(null, user.id);
-  });
-
-  passport.deserializeUser(function(id, done) {
-    User.getUserById(id, function(err, user) {
-      done(err, user);
-    });
   });
 
   app.post('/users/login',
@@ -153,28 +230,21 @@ module.exports = function(app, passport, LocalStrategy) {
     }
   );
 
-  app.get('/dashboard', ensureAuthenticated, function(req, res) {
+  app.post('/viewflashcards', function(req, res) {
 
+    var sub = req.body.deckname;
     var username = req.user.username;
-    console.log("dashboard: " + username);
+    console.log(sub);
+
+    Deck.getFlashcards(username, sub, function(err, data){
+      if(err) {
+        console.log(err);
+      }
+      else {
+        console.log(data);
+      }
+    });
 
     res.render('dashboard.ejs');
-  });
-
-  function ensureAuthenticated(req, res, next) {
-    if(req.isAuthenticated()) {
-      return next();
-    }
-    else {
-      console.log("User is attempting to access dashboard without logging in.");
-      var error_message = 'You are not logged in.';
-      res.render('login.ejs', {error_message: error_message});
-    }
-  }
-
-  app.get('/logout', function(req, res) {
-    req.logout();
-    var success_msg = 'You are securely logged out.';
-    res.render('login.ejs', {success_msg: success_msg});
   });
 }

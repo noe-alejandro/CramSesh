@@ -19,7 +19,6 @@ Flashcard.saveDeckName = function(username, subjectName, callback) {
   deck.owner = username;
   deck.subject = subjectName;
   deck.save();
-
 };
 
 Flashcard.saveFlashcard = function(username, subjectName, front, back, callback) {
@@ -27,8 +26,8 @@ Flashcard.saveFlashcard = function(username, subjectName, front, back, callback)
   console.log(".......in the flashcards.js model......")
   console.log(username);
   console.log(subjectName);
-  console.log(front);
-  console.log(back);
+  console.log(front + typeof(front));
+  console.log(back + typeof(back));
 
   Flashcard.findOne({owner: username, subject:subjectName}, function(err, data) {
     if(err) {
@@ -44,3 +43,23 @@ Flashcard.saveFlashcard = function(username, subjectName, front, back, callback)
     }
   });
 };
+
+Flashcard.getDecks = function(username, callback) {
+  Flashcard.find({"owner": username}, callback);
+};
+
+Flashcard.getFlashcards = function(username, subject, callback) {
+  Flashcard.findOne({"owner" : username, "subject" : subject}, callback);
+};
+
+
+
+
+
+
+
+
+
+
+
+

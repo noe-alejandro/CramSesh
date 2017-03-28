@@ -1,4 +1,4 @@
-module.exports = function(app, passport, LocalStrategy) {
+module.exports = function(app, passport, LocalStrategy, io, redisClient) {
 
   var User = require('./models/user');
   var Deck = require('./models/flashcards.js');
@@ -59,6 +59,12 @@ module.exports = function(app, passport, LocalStrategy) {
     res.render('about.ejs');
   });
 
+  app.get('/chatroom', function(req, res) {
+    var username = req.user.username;
+    console.log(username);
+    res.render('chat.ejs');
+  });
+
   app.get('/contact', function(req, res) {
     res.render('contact.ejs');
   });
@@ -79,6 +85,14 @@ module.exports = function(app, passport, LocalStrategy) {
     res.render('editdecks.ejs');
   });
 
+  app.get('/editflashcards', ensureAuthenticated, function(req, res) {
+    res.render('editflashcards.ejs');
+  });
+
+  app.get('/getusername', ensureAuthenticated, function(req, res) {
+    res.send({"username" : req.user.username});
+  });
+
   app.get('/logout', function(req, res) {
     req.logout();
     req.flash('success_msg','You are securely logged out.');
@@ -89,7 +103,7 @@ module.exports = function(app, passport, LocalStrategy) {
     res.render('userprofile.ejs');
   });
 
-  app.get('/study', ensureAuthenticated, function(req, res) {
+  app.get('/studyarea', ensureAuthenticated, function(req, res) {
     res.render('study.ejs');
   });
 
@@ -112,7 +126,6 @@ module.exports = function(app, passport, LocalStrategy) {
         var subjectsArray = [];
 
         for(var i = 0; i < len; ++i) {
-          console.log(data[i].subject);
           subjectsArray.push(data[i].subject);
         }
       }
@@ -120,7 +133,9 @@ module.exports = function(app, passport, LocalStrategy) {
     });
   });
 
-
+  app.get('/viewcards', function(req, res) {
+    res.render('viewcards.ejs');
+  });
 
   // ******************************
   // ******** POST ROUTES *********
@@ -231,20 +246,96 @@ module.exports = function(app, passport, LocalStrategy) {
   );
 
   app.post('/viewflashcards', function(req, res) {
-
     var sub = req.body.deckname;
     var username = req.user.username;
-    console.log(sub);
 
     Deck.getFlashcards(username, sub, function(err, data){
       if(err) {
         console.log(err);
       }
       else {
+        console.log("Hello this is before the card info: ");
         console.log(data);
+        res.render('viewcards.ejs');
       }
     });
-
-    res.render('dashboard.ejs');
   });
-}
+
+  // SOCKET.IO ROUTES
+  io.on('connection', function(socket) {
+
+    // BROADCAST USERNAME THAT CONNECTED
+    socket.on('user connection', function(data) {
+      socket.username = data.username;
+      redisClient.rpush('connectedUsers', socket.username, function(err, replies){
+        if(err){
+          console.log(err);
+        } else {
+          console.log(replies);
+        }
+      });
+      redisClient.lrange('connectedUsers', 0, -1, function(err, replies){
+        if(err){
+          console.log(err);
+        } else {
+          console.log(replies);
+          replies.forEach(function(reply, i){
+            console.log(i + " : " + reply);
+          });
+          io.emit('user connection broadcast', {"users" : replies});
+        }
+      });
+    });
+
+    socket.on('user message', function(data) {
+      console.log(data);
+      io.emit('user message broadcast', data);
+    });
+
+    socket.on('disconnect', function(username) {
+      console.log(socket.username + "left chat room");
+      redisClient.lrem('connectedUsers', 1, socket.username);
+
+      redisClient.lrange('connectedUsers', 0, -1, function(err, replies) {
+        if(err){
+          console.log(err);
+        } else {
+          console.log(replies);
+          replies.forEach(function(reply, i){
+            console.log(i + " : " + reply);
+          });
+        }
+        io.emit('user disconnect broadcast', {"users" : replies});
+      });
+    });
+  });
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//ENDLINE HERE
+
+
+
+
+
+
+
+
+
+
+

@@ -20,14 +20,14 @@ var $main = function () {
           // DISPLAY ALL AVAILABLE DECKS
           var startDivTag = '<div class="col-xs-6 col-sm-3 placeholder">';
           var imageTag = '<img src="img/sub_types/1.png" width="200" height="200" class="img-responsive" alt="Generic placeholder thumbnail">';
-          var subjectLink = '<h4><a class="sub" href="#">' + data.subjects[i] + '</a></h4>';
+          var subjectLink = '<button class="btn btn-link">' + data.subjects[i] + '</button>';
           var endDivTag = '</div>';
           var entry = startDivTag + imageTag + subjectLink + endDivTag;
           $('#insert-subjects').append(entry);
         }
       }
       // SEND THE SELECTED DECK FOR SERVER PROCESSING
-      $('.sub').on('click', function(event) {
+      $('.btn').on('click', function(event) {
         console.log($(this).html());
         var data = {
           deckname: $(this).html()
@@ -36,11 +36,7 @@ var $main = function () {
           method : 'POST',
           url : '/viewflashcards',
           data: JSON.stringify(data),
-          contentType : 'application/json',
-          dataType : 'json',
-          success : function(data) {
-            console.log(data);
-          }
+          contentType : 'application/json'
         });
       });
     }

@@ -1,0 +1,19 @@
+.bottom-boarder {
+  border-bottom: 1px solid;
+  border-color: #ABB2B9;
+  width: 400px;
+  margin: auto;
+  width: 60%;
+}
+
+#power {
+  color: #3498DB;
+}
+
+#love {
+  color: #C0392B;
+}
+
+#green {
+  color: #229954;
+}

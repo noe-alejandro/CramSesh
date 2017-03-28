@@ -29,6 +29,8 @@
     "mongoose": "latest",
     "passport": "latest",
     "passport-http": "latest",
-    "passport-local": "latest"
+    "passport-local": "latest",
+    "redis": "^2.7.1",
+    "socket.io": "^1.7.3"
   }
 }

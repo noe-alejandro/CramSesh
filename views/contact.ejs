@@ -18,6 +18,7 @@
 
     <!-- Custom styles for this template -->
     <link href="css/starter-template.css" rel="stylesheet">
+    <link href="css/contactstyle.css" rel="stylesheet">
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -49,80 +50,90 @@
             <li><a href="/about">About</a></li>
             <li class="active"><a href="/contact">Contact</a></li>
           </ul>
-
           <% if(user && typeof user !== 'undefined') { %>
               <form class="navbar-form navbar-right" method="get" action="/logout">
                 <button type="submit" class="btn btn-success">Logout</button>
               </form>
           <% } %>
-
         </div><!--/.nav-collapse -->
       </div>
     </nav>
 
-    <div class="container">
-  <div class="row">
-    <div class="col-lg-6">
-      <h2 class="bg-info">Contact us</h2>
-      <p>If you have any questions, don't hesitate to ask! Our service team will try to respond as fast as possible.</p>
-
-       <div class="row">
-      <div class="col-lg-12">
-        <h3 class="bg-info">Mailing Address</h3>
-        <p> 800 N State College Blvd, Fullerton, CA 92831</p>
-      </div>
-      </div>
+    <div class="container-fluid text-center">
+      <h1>Contact Our Team</h1>
+      <p class="lead">If you have any questions, don't hesitate to ask! Our service team will try to respond as fast as possible.</p>
+      <div class="bottom-boarder"></div>
       <div class="row">
-        <div class="col-lg-12">
-        <h3 class="bg-info">E-mail</h3>
-        <table class="table">
+        <div class="col-md-12">
+          <h2>Mailing Address</h2>
+          <p> 800 N State College Blvd, Fullerton, CA 92831</p>
+        </div>
+      </div>
+      <div class="bottom-boarder"></div>
+      <h2>Email</h2>
+    </div>
+    <div class="container">
+      <div class="col-md-12">
+        <table class="table table-hover">
           <thead>
-          <tr>
-            <th>Name</th>
-            <th>E-Mail</th>
-          </tr>
+            <tr>
+              <th>Name</th>
+              <th>E-Mail</th>
+              <th>Role</th>
+            </tr>
           </thead>
           <tbody>
             <tr>
               <td>Noe Rojas</td>
               <td>noerojas@csu.fullerton.edu</td>
+              <td>Lead Web Developer</td>
             </tr>
             <tr>
               <td>Jonathan Saysay</td>
               <td>jsaysay5@gmail.com</td>
+              <td>Front-End Web Developer</td>
             </tr>
             <tr>
               <td>Alan Adame</td>
-              <td>email@email.com</td>
+              <td>aadame4@csu.fullerton.edu</td>
+              <td>Designer/Tech Researcher/Developer</td>
             </tr>
             <tr>
-              <td>Zach Qiu</td>
-              <td>email@email.com</td>
+              <td><strike>Zach Qiu</strike></td>
+              <td><strike>qiuzihaoo@csu.fullerton.edu</strike></td>
+              <td>Job Abandonment :(</td>
             </tr>
           </tbody>
         </table>
+      </div>
+    </div>
+    <div class="container container-table">
+      <div class="row vertical-center-row">
+        <div class="col-md-6 col-md-offset-3">
+          <div class="text-center">
+            <h2>Send Us A Message</h2>
+            <% if(typeof success_msg !== 'undefined' && success_msg.length > 0) { %>
+                <div class="alert alert-success"><%=success_msg%></div>
+            <%}
+              if(typeof error_msg !== 'undefined' && error_msg.length > 0) { %>
+                <div class="alert alert-danger"><%=error_msg%></div>
+            <%}%>
+          </div>
+          <br>
+
+          <div class="panel panel-default">
+            <div class="panel-body">
+              <form method="post" class="form" action="/users/login">
+                <div class="form-group"><label>Full Name</label><input class="form-control" type="text" name="username" placeholder="Full Name"></div>
+                <div class="form-group"><label>Email</label><input class="form-control" type="text" name="email" placeholder="Email"></div>
+                <div class="form-group"><label>Message</label><textarea class="form-control" rows="7" type="text" name="messageText" placeholder="Enter your message here..."></textarea></div>
+                <div class="form-group"><input type="submit" class="btn btn-primary" value="Send Message"></div>
+              </form>
+            </div>
+          </div>
         </div>
       </div>
     </div>
-    <div class="col-lg-6">
-      <h2 class= "bg-info">Submit any inquiries here.</h2>
-      <form id="contactform">
-        <div class="form-group">
-          <input type="text" id="name" placeholder="name" class="form-control"><br>
-        </div>
-        <div class="form-group">
-          <input type="email" id="email" placeholder="email" class="form-control"><br>
-        </div>
-        <div class="form-group">
-          <textarea id="message" class="form-control"></textarea>
-        </div>
-        <div class="form-group">
-          <input type="submit" id="button" placeholder="submit" class="form-control">
-        </div>
-      </form>
-    </div>
-  </div>
-</div>
 
 
     <script
@@ -133,6 +144,5 @@
     <script src="js/bootstrap.min.js"></script>
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <script src="js/ie10-viewport-bug-workaround.js"></script>
-    <script src="js/main.js"></script>
   </body>
 </html>

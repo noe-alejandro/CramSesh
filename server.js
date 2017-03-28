@@ -10,6 +10,8 @@ var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 var mongo = require('mongodb');
 var mongoose = require('mongoose');
+var redis = require("redis");
+var redisClient;
 
 // Initiate Application
 var app = express();
@@ -17,15 +19,28 @@ var app = express();
 // Initiate Flash Messaging
 app.use(flash());
 
-// Database Connection
-mongoose.connect('mongodb://localhost/CramSesh');
-var db = mongoose.connection;
-
 /*
   Starting MongoDB in our NodeJS VMBOX
   $  mkdir -p $HOME/mongodb/data
   $  $HOME/mongodb/bin/mongod --dbpath=$HOME/mongodb/data
 */
+// MongoDB  Connection
+mongoose.connect('mongodb://localhost/CramSesh');
+var db = mongoose.connection;
+
+/*
+  Starting Redis
+  $  $HOME/redis/src/redis-server
+*/
+// Redis Connection
+redisClient = redis.createClient();
+
+// Creating Port and Server. Listening on Port 3000
+var port = process.env.PORT || 3000;
+var server = require("http").createServer(app);
+
+// Creating Socket.io for chat feature
+var io = require('socket.io')(server);
 
 // BodyParser Middleware
 app.use(bodyParser.json());
@@ -43,7 +58,7 @@ app.use(session({
     resave: true
 }));
 
-// Passport Initialize
+// Passport Initialize + Session
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -84,12 +99,9 @@ app.use(function (req, res, next) {
 });
 
 // Connecting Routes
-require('./app/routes.js')(app, passport, LocalStrategy);
+require('./app/routes.js')(app, passport, LocalStrategy, io, redisClient);
 
-// Creating Port and Server
-var port = process.env.PORT || 3000;
-var server = require("http").createServer(app);
-
+// Server started listening on port 3000
 server.listen(port, function() {
   console.log('Server listening at port %d', port);
 });

@@ -1,4 +1,4 @@
-var main = function() {
+var $main = function() {
 
   console.log("hello world!");
 
@@ -9,4 +9,4 @@ var main = function() {
   });
 
 };
-$(document).ready(main);
+$(document).ready($main);

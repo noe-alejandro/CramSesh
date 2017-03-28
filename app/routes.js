@@ -89,6 +89,28 @@ module.exports = function(app, passport, LocalStrategy, io, redisClient) {
     res.render('editflashcards.ejs');
   });
 
+  app.get('/getflashcards', ensureAuthenticated, function(req, res) {
+
+    redisClient.get('subject', function(err, reply) {
+      if(err) {
+        console.log(err);
+      } else {
+        var username = req.user.username;
+        Deck.getFlashcards(username, reply, function(err, data){
+          if(err) {
+            console.log(err);
+            res.send({"deckInfo" : "MongoDB query failed."});
+          }
+          else {
+            console.log('**** User Card Data *****');
+            console.log(data);
+            res.send({"deckInfo" : data});
+          }
+        });
+      }
+    });
+  });
+
   app.get('/getusername', ensureAuthenticated, function(req, res) {
     res.send({"username" : req.user.username});
   });
@@ -133,8 +155,8 @@ module.exports = function(app, passport, LocalStrategy, io, redisClient) {
     });
   });
 
-  app.get('/viewcards', function(req, res) {
-    res.render('viewcards.ejs');
+  app.get('/viewflashcards', function(req, res) {
+    res.render('viewflashcards.ejs');
   });
 
   // ******************************
@@ -246,17 +268,12 @@ module.exports = function(app, passport, LocalStrategy, io, redisClient) {
   );
 
   app.post('/viewflashcards', function(req, res) {
-    var sub = req.body.deckname;
-    var username = req.user.username;
-
-    Deck.getFlashcards(username, sub, function(err, data){
+    var subject = req.body.deckname;
+    redisClient.set('subject', subject, function(err, reply) {
       if(err) {
         console.log(err);
-      }
-      else {
-        console.log("Hello this is before the card info: ");
-        console.log(data);
-        res.render('viewcards.ejs');
+      } else {
+        console.log('Redis Reply:' + reply);
       }
     });
   });
@@ -310,32 +327,3 @@ module.exports = function(app, passport, LocalStrategy, io, redisClient) {
     });
   });
 };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//ENDLINE HERE
-
-
-
-
-
-
-
-
-
-
-

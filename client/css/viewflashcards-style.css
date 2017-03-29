@@ -1,0 +1,9 @@
+#cardimage {
+  background-image: url('../img/notecard_white.jpeg');
+  font-weight: bold;
+  font-size: 20px;
+}
+
+textarea {
+    resize: none;
+}

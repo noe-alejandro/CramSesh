@@ -47,6 +47,95 @@ module.exports = function(app, passport, LocalStrategy, io, redisClient) {
     }
   }
 
+// ****************************************************************************
+// ************************** BEGINNING OF TESTING ****************************
+// ****************************************************************************
+
+  // TESTING AREA: Mongoose queries for deleting and updating
+
+  // delete entire deck
+  app.get('/removedeck', function(req, res) {
+
+    var deckID = "58db4ab246ab970d718d8883";
+
+    Deck.removeDeck(deckID, function(err, data) {
+      if(err) {
+        console.log(err);
+      }
+      else {
+        console.log(data);
+        res.send(data);
+      }
+    });
+  });
+
+  // delete flashcard
+  app.get('/removeflashcard', function(req, res) {
+
+    var deckID = "58db5115eafb710e03af64b4";
+
+    // get the correct deck seleted by the user (ajax call)
+    Deck.getSelectedDeck(deckID, function(err, deck) {
+      if(err) {
+        console.log(err);
+      } else {
+
+        // carId will be passed through the ajax call
+        var cardID = "58db511eeafb710e03af64b5";
+
+        // find the card with the cardID and remove it
+        deck.cards.id(cardID).remove();
+
+        // save the deck
+        deck.save(function(err) {
+          if(err) {
+            console.log(err);
+          } else {
+            console.log("Flashcard was removed!");
+          }
+        });
+      }
+    });
+  });
+
+  // edit particular flashcard
+  app.get('/editflashcard', function(req, res) {
+
+    var deckID = "58db5115eafb710e03af64b4";
+    var cardID = "58db5124eafb710e03af64b6";
+
+    var newFront = "You got hacked";
+    var newBack = "by yours truly";
+
+    Deck.updateFlashcard(deckID, cardID, newFront, newBack, function(err, data) {
+      if(err){
+        console.log(err);
+      } else {
+        console.log(data);
+      }
+    });
+  });
+
+  // edit subject (deck) name
+  app.get('/editdeckname', function(req, res) {
+
+    var deckID = "58db5115eafb710e03af64b4";
+
+    var newSubjectName = "You Bitch Made";
+
+    Deck.updateDeckName(deckID, newSubjectName, function(err, data) {
+      if(err) {
+        console.log(err);
+      } else {
+        console.log(data);
+      }
+    });
+  });
+
+// ****************************************************************************
+// *************************** END OF TESTING *********************************
+// ****************************************************************************
+
   // ******************************
   // ******** GET ROUTES **********
   // ******************************
@@ -167,8 +256,9 @@ module.exports = function(app, passport, LocalStrategy, io, redisClient) {
     subjectName = req.body.deckName;
     var username = req.user.username;
 
-    Deck.saveDeckName(username, subjectName, function(result) {
-
+    Deck.saveDeckName(username, subjectName, function(err, data) {
+      if(err) throw err;
+      console.log(data);
     });
 
     req.flash('deck_msg', 'Your deck has been created!');
@@ -189,7 +279,18 @@ module.exports = function(app, passport, LocalStrategy, io, redisClient) {
     // NOTE: Consider single or double sided flashcards, future feature.
     if(front !== "" || back !== "") {
 
-      Deck.saveFlashcard(username, subjectName, front, back, function() {
+      Deck.saveFlashcard(username, subjectName, front, back, function(err, data) {
+        if(err) {
+          console.log(err);
+        }
+        else {
+          data.cards.push({front: front, back: back});
+          data.save(function(err) {
+            if(err) {
+              console.log(err);
+            }
+          });
+        }
       });
 
       req.flash('flashcard_msg', 'Your flashcard has been saved!');
@@ -280,7 +381,6 @@ module.exports = function(app, passport, LocalStrategy, io, redisClient) {
 
   // SOCKET.IO ROUTES
   io.on('connection', function(socket) {
-
     // BROADCAST USERNAME THAT CONNECTED
     socket.on('user connection', function(data) {
       socket.username = data.username;

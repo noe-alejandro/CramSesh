@@ -234,13 +234,16 @@ module.exports = function(app, passport, LocalStrategy, io, redisClient) {
       }
       else {
         var len = data.length;
-        var subjectsArray = [];
+        var arr = [];
 
         for(var i = 0; i < len; ++i) {
-          subjectsArray.push(data[i].subject);
+          arr.push({
+            "subject" : data[i].subject,
+            "cover" : data[i].cover
+          });
         }
       }
-      res.send({"subjects" : subjectsArray});
+      res.send({"data" : arr});
     });
   });
 
@@ -255,10 +258,16 @@ module.exports = function(app, passport, LocalStrategy, io, redisClient) {
 
     subjectName = req.body.deckName;
     var username = req.user.username;
+    var cover = req.body.selectCoverPhoto;
 
-    Deck.saveDeckName(username, subjectName, function(err, data) {
-      if(err) throw err;
-      console.log(data);
+    console.log("Cover photo: " + cover);
+
+    Deck.saveDeckName(username, subjectName, cover, function(err, data) {
+      if(err) {
+        console.log(err);
+      }else {
+        console.log("Subject and Cover have been saved!\n" + data);
+      }
     });
 
     req.flash('deck_msg', 'Your deck has been created!');

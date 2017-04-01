@@ -1,8 +1,9 @@
 var mongoose = require('mongoose');
 
 var FlashcardSchema = mongoose.Schema({
-  owner: String,
-  subject: String,
+  owner : String,
+  subject : String,
+  cover : String,
   cards: [
     {
       front: String,
@@ -13,10 +14,11 @@ var FlashcardSchema = mongoose.Schema({
 
 var Flashcard = module.exports = mongoose.model('Flashcard', FlashcardSchema);
 
-Flashcard.saveDeckName = function(username, subjectName, callback) {
+Flashcard.saveDeckName = function(username, subjectName, coverPhoto, callback) {
   var deck = new Flashcard();
   deck.owner = username;
   deck.subject = subjectName;
+  deck.cover = coverPhoto;
   deck.save(callback);
 };
 

@@ -170,6 +170,7 @@ module.exports = function(app, passport, LocalStrategy, io, redisClient) {
     res.render('dashboard.ejs');
   });
 
+// What is using this?
   app.get('/editdecks', ensureAuthenticated, function(req, res) {
     res.render('editdecks.ejs');
   });
@@ -202,6 +203,18 @@ module.exports = function(app, passport, LocalStrategy, io, redisClient) {
 
   app.get('/getusername', ensureAuthenticated, function(req, res) {
     res.send({"username" : req.user.username});
+  });
+
+  app.get('/getuserprofile', ensureAuthenticated, function(req, res) {
+
+    var userProfile = {
+      "name" : req.user.full_name,
+      "username" : req.user.username,
+      "email" : req.user.email
+    };
+
+    res.send({"data" : userProfile});
+
   });
 
   app.get('/logout', function(req, res) {
@@ -254,6 +267,15 @@ module.exports = function(app, passport, LocalStrategy, io, redisClient) {
   // ******************************
   // ******** POST ROUTES *********
   // ******************************
+app.post('/contactteam', function(req, res) {
+
+  req.flash('success_msg', 'Your message has been sent. Please wait 24 hours for a response.');
+  res.redirect('/contact');
+});
+
+
+
+
   app.post('/createdeck', ensureAuthenticated, function(req, res) {
 
     subjectName = req.body.deckName;

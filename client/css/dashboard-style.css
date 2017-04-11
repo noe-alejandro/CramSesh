@@ -13,6 +13,10 @@ body {
   font-weight: bold;
 }
 
-a.getFlashcards{
+a.getFlashcards {
   text-decoration: none;
+}
+
+#userInfo {
+  padding-top: 45px;
 }

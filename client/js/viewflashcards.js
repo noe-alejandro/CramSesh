@@ -1,73 +1,40 @@
 var $main = function() {
-  $.ajax({
-    method : 'GET',
-    url : '/getflashcards',
-    contentType : 'application/json',
-    dataType : 'json',
-    success : function(data) {
-      // Display the flashcards for the subject selected by the
-      // user in the dashboard.
-       var count = 0;
-       var isFront = true;
-       var side = "Front";
+ $.ajax({
+   method : 'GET',
+   url : '/getflashcards',
+   contentType : 'application/json',
+   dataType : 'json',
+   success : function(data) {
+     // Display the flashcards for the subject selected by the
+     // user in the dashboard.
 
-       $(".page-header").html("Deck name: "+data.deckInfo.subject);
-       $("#cardnum").html((count+1)+" of "+data.deckInfo.cards.length);
-       $("#cardimage").html(data.deckInfo.cards[count].front);
-       $("#cardside").html(side);
-       //button to flip card sides.
-      $("#flip").on("click",function() {
+      $(".page-header").html("Viewing Deck: " + data.deckInfo.subject);
 
-        if(isFront)
+      for (var i = 0; i < data.deckInfo.cards.length; i++)
+      {
+        var openDiv = '<div class="col-xs-6 col-md-3 placeholder text-center">';
+        var cardtag = '<div class="card">';
+        var cardtitle = '<h4 id="cardnum"class="card-title pull-left"><strong>';
+        var cardsideDiv = '<div id="cardside'+i+'" class="pull-left"></div>';
+        var closetitle = '</strong></h4>';
+        var textTag = '<textarea readonly id="cardimage'+i+'" data-value="'+ i +'"  rows="8" class="form-control" type="text" name="front">'+data.deckInfo.cards[i].front+'</textarea readonly>';
+        var closeDiv= '</div>';
+        var result = openDiv + cardtag + cardtitle + (i+1) + "." + closetitle + textTag + closeDiv + closeDiv;
+        $(".ListCards").append(result);
+      }
+
+     $(".ListCards textarea").on("click",function() {
+
+        if($("#cardimage"+$(this).data("value")).val() == data.deckInfo.cards[$(this).data("value")].front)
         {
-          side = "Back";
-          $("#cardimage").html(data.deckInfo.cards[count].back);
-          $("#cardside").html(side);
-          isFront = false;
+          $("#cardimage"+$(this).data("value")).html(data.deckInfo.cards[$(this).data("value")].back);
         }
         else
         {
-          side = "Front";
-          $("#cardimage").html(data.deckInfo.cards[count].front);
-          $("#cardside").html(side);
-          isFront = true;
+          $("#cardimage"+$(this).data("value")).html(data.deckInfo.cards[$(this).data("value")].front);
         }
-      });
-       //button for next card.
-      $("#nextcard").on("click",function() {
-
-        count++;
-        side = "Front";
-        isFront = true;
-
-        if(count == data.deckInfo.cards.length-1)
-        {
-          $("#nextcard").prop("disabled",true);
-        }
-
-        $("#cardimage").html(data.deckInfo.cards[count].front);
-        $("#prevcard").prop("disabled",false);
-        $("#cardnum").html((count+1)+" of "+data.deckInfo.cards.length);
-        $("#cardside").html(side);
-      });
-
-      //button to go back a card.
-      $("#prevcard").on("click",function() {
-        count--;
-        side = "Front";
-        isFront = true;
-
-        if(count == 0)
-        {
-          $("#prevcard").prop("disabled",true);
-        }
-
-        $("#cardimage").html(data.deckInfo.cards[count].front);
-        $("#nextcard").prop("disabled",false);
-        $("#cardnum").html((count+1)+" of "+data.deckInfo.cards.length);
-        $("#cardside").html(side);
       });
     }
-  });
+ });
 };
 $(document).ready($main);

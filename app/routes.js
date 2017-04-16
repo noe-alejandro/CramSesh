@@ -206,15 +206,12 @@ module.exports = function(app, passport, LocalStrategy, io, redisClient) {
   });
 
   app.get('/getuserprofile', ensureAuthenticated, function(req, res) {
-
     var userProfile = {
       "name" : req.user.full_name,
       "username" : req.user.username,
       "email" : req.user.email
     };
-
     res.send({"data" : userProfile});
-
   });
 
   app.get('/logout', function(req, res) {
@@ -267,14 +264,17 @@ module.exports = function(app, passport, LocalStrategy, io, redisClient) {
   // ******************************
   // ******** POST ROUTES *********
   // ******************************
-app.post('/contactteam', function(req, res) {
+  app.post('/contactteam', function(req, res) {
 
-  req.flash('success_msg', 'Your message has been sent. Please wait 24 hours for a response.');
-  res.redirect('/contact');
-});
+    var name = req.body.name;
+    var mess = req.body.mess;
 
+    console.log("message coming from: " + name);
+    console.log("message text: " + mess);
 
-
+    req.flash('success_msg', 'Your message has been sent. Please wait 24 hours for a response.');
+    res.redirect('/contact');
+  });
 
   app.post('/createdeck', ensureAuthenticated, function(req, res) {
 
@@ -292,10 +292,9 @@ app.post('/contactteam', function(req, res) {
       }
     });
 
-    req.flash('deck_msg', 'Your deck has been created!');
+    req.flash('deck_msg', 'Flashcard Deck Name: ' + subjectName);
     res.render('createflashcards.ejs',
       {
-        subject: subjectName,
         deck_msg: req.flash('deck_msg')
       }
     );
@@ -324,8 +323,9 @@ app.post('/contactteam', function(req, res) {
         }
       });
 
+      // This is not really doing anything, just console log on the client side.
       req.flash('flashcard_msg', 'Your flashcard has been saved!');
-      res.render('createflashcards.ejs',
+      res.send(
         {
           subject: subjectName,
           flashcard_msg: req.flash('flashcard_msg')

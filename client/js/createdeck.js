@@ -15,7 +15,7 @@ var $main = function() {
 
   function removeImageUploadForm() {
     uploadArea.fadeOut(1000);
-    uoloadArea.remove();
+    uploadArea.remove();
   }
 
   coverImg.on('change', function() {

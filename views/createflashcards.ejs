@@ -55,44 +55,44 @@
       <div id="createDeckContainer">
         <div class="container">
           <div class="starter-template">
-            <h1>Create your flashcards</h1>
+            <h1>Create Your Flashcard</h1>
           </div>
         </div>
         <div class="container container-table">
           <div class="row vertical-center-row">
             <div class="text-center col-md-6 col-md-offset-3">
 
-              <%
-                var subject;
-              %>
               <% if(typeof deck_msg !== 'undefined' && deck_msg.length > 0) { %>
                   <div class="alert alert-success fade in"><%=deck_msg%></div>
               <%}%>
-
-              <% if(typeof flashcard_msg !== 'undefined' && flashcard_msg.length > 0) { %>
-                  <div class="alert alert-info fade in"><%=flashcard_msg%></div>
-              <%}%>
-
-            <h3>Your deck name: <span id="subjectNameColor"><%=subject%></span></h3>
+              <div id="numberOfFlashcards"></div>
             </div>
+
+            <!-- Disply only when the user wants to create a new flashcards. -->
             <div class="text-center col-md-6 col-md-offset-3">
-              <form method="post" class="form" action="/createflashcards">
+
+              <div id="newCard">
+                <br>
+                <span id="newCardText">Create New Card?</span>&nbsp;&nbsp;
+                <input id="continue" class="btn btn-primary" type="submit" value="Yes">&nbsp;&nbsp;
+                <a href="/dashboard" class="btn btn-primary" role="button">No</a>
+              </div>
+
+              <div id="insertCardInfo">
                 <div class="form-group">
-                  <label class="lead">Front Information:</label>
+                  <label>Front Information:</label>
                   <textarea id="frontarea" rows="11" class="form-control" type="text" name="front" placeholder="Front"></textarea>
                 </div>
                 <div class="form-group">
-                  <label class="lead">Back Information:</label>
+                  <label>Back Information:</label>
                   <textarea id="backarea" rows="11" class="form-control" type="text" name="back" placeholder="Back"></textarea>
                 </div>
                 <div class="form-group">
                   <input id="createFlashcard" type="submit" class="btn btn-primary btn-lg" value="Create Flashcard">
                 </div>
-              </form>
-              <form method="get" class="form" action="/dashboard">
-                <input id="done" type="submit" class="btn btn-primary btn-lg" value="Done">
-              </form>
+              </div>
             </div>
+
           </div>
         </div>
       </div>
@@ -106,5 +106,6 @@
     <script src="js/bootstrap.min.js"></script>
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <script src="js/assets/ie10-viewport-bug-workaround.js"></script>
+    <script src="js/createflashcards.js"></script>
   </body>
 </html>

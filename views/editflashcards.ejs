@@ -19,6 +19,7 @@
 
     <!-- Custom styles for this template -->
     <link href="css/dashboard-style.css" rel="stylesheet">
+    <link href="css/editflashards-style.css" rel="stylesheet">
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -89,12 +90,23 @@
         </div>
         <div class="col-md-9 main">
           <h1 class="page-header">Edit Flashcards</h1>
-          <div class="row placeholders">
-            <div id="insert-subjects"></div>
+          <h2>Pick the deck you want to edit.</h2>
+            <table class="table table-striped">
+                <thead>
+                  <tr>
+                    <th>Deck Name</th>
+                    <th>Flashcard Count</th>
+                    <th>Edit</th>
+                    <th>Delete</th>
+                  </tr>
+                </thead>
+                <tbody id="insert-deck-info">
+
+                </tbody>
+              </table>
           </div>
         </div>
       </div>
-    </div>
     <script
       src="https://code.jquery.com/jquery-3.1.1.js"
       integrity="sha256-16cdPddA6VdVInumRGo6IbivbERE8p7CQR3HzTBuELA="

@@ -171,12 +171,26 @@ module.exports = function(app, passport, LocalStrategy, io, redisClient) {
   });
 
 // What is using this?
-  app.get('/editdecks', ensureAuthenticated, function(req, res) {
+  app.get('/editdeck', ensureAuthenticated, function(req, res) {
     res.render('editdecks.ejs');
   });
 
   app.get('/editflashcards', ensureAuthenticated, function(req, res) {
     res.render('editflashcards.ejs');
+  });
+
+  app.get('/getdecksInfo', ensureAuthenticated, function(req, res) {
+    var username = req.user.username;
+
+    Deck.getDecks(username, function(err, data) {
+
+      if(err) {
+        console.log(err);
+      }
+      else {
+        res.send({"data" : data});
+      }
+    });
   });
 
   app.get('/getflashcards', ensureAuthenticated, function(req, res) {
@@ -345,6 +359,34 @@ module.exports = function(app, passport, LocalStrategy, io, redisClient) {
       }
     }
   });
+
+  app.post('/deletedeck', function(req, res) {
+
+    var id = req.body.deckID;
+    console.log(id);
+
+    Deck.removeDeck(id, function(err, data) {
+      if(err) {
+        console.log(err);
+      }
+      else {
+        console.log(data);
+        //res.send(data);
+      }
+    });
+  });
+
+
+  app.post('/editdeck', function(req, res) {
+
+    var deckID = req.body.deckID;
+    console.log(deckID);
+
+    //READY TO ROCK'n'ROLLLLLLLLLLLLLLLLLLLL
+
+    res.render('editdecks.ejs');
+  });
+
 
   app.post('/users/register', function(req, res) {
 

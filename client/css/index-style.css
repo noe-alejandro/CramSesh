@@ -1,0 +1,26 @@
+.gallery {
+  font-family: courier;
+  height: 480px;
+  text-align: center;
+  margin: auto;
+  width: 50%;
+}
+
+.gallery-cell {
+  width: 100%;
+  height: 500px;
+  color: black;
+  font-size: 24px;
+  text-align: center;
+
+  background-image: url("../img/notecard_white.jpeg");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+
+.gallery-caption{
+  margin-top: 65px;
+  margin-right: 10px;
+  margin-left: 10px;
+}

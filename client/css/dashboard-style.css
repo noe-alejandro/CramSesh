@@ -9,12 +9,21 @@ body {
 }
 
 .sidebitch:hover {
-  background-color: #16A085;
+  background-color: #A9A9A9;
   font-weight: bold;
+  font-size: 1.2em;
+  color: #900C3F;
 }
 
 a.getFlashcards {
   text-decoration: none;
+  font-size: 1.2em;
+}
+
+a.getFlashcards:hover {
+  font-size: 1.4em;
+  font-weight: bold;
+  color: #00AAFF;
 }
 
 #userInfo {

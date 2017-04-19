@@ -12,6 +12,9 @@ var $main = function () {
       if(data.data.length === 0) {
         var noSubjects = "No decks to display. Create some flashcards in the create flashcards area."
         console.log(noSubjects);
+        var noDecksImage = '<img src="img/nodecksaboutit.png" class="img-responsive" alt="No Decks To Display">';
+        $('#no-decks').append(noDecksImage);
+
       }
       else {
         for(var i = 0; i < len; i++) {

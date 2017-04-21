@@ -1,0 +1,77 @@
+/* external css: flickity.css */
+/* * {
+  box-sizing: border-box;
+}
+
+body { font-family: sans-serif; }
+
+.carousel {
+  background: #EEE;
+}
+
+.carousel-cell {
+  width: 66%;
+  height: 200px;
+  margin-right: 10px;
+  background: #8C8;
+  border-radius: 5px;
+  counter-increment: carousel-cell;
+}
+
+
+
+.carousel-cell:before {
+  display: block;
+  text-align: center;
+  content: counter(carousel-cell);
+  line-height: 200px;
+  font-size: 80px;
+  color: white;
+}*/
+
+
+/* external css: flickity.css */
+
+* { box-sizing: border-box; }
+
+body { font-family: sans-serif; }
+
+.carousel {
+  background: #EEE;
+}
+
+.carousel img {
+  display: block;
+  height: 200px;
+}
+
+@media screen and ( min-width: 768px ) {
+  .carousel img {
+    height: 400px;
+  }
+}
+
+.full-entity {
+    position: relative;
+    display: inline-block;
+}
+
+.notecard-text{
+    position: absolute;
+    height: 100%;
+    text-align: center;
+    width: 100%;
+}
+
+h4 {
+   display: inline-block;
+   font-size: 35px; /*or whatever you want*/
+   color: #000000;
+   text-align: center;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}

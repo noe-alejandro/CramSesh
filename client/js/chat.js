@@ -8,11 +8,20 @@ var $main = function() {
   });
 
   socket.on('user connection broadcast', function(data) {
-    $('#user-connections').empty();
+
+    $('#users-connections').empty();
+    var insertImage;
+    var insertUsername;
     var len = data.users.length;
+
     for(var i = 0; i < len; ++i) {
-      $insert = data.users[i] + " is connected <br>";
-      $('#user-connections').append($insert);
+
+      insertImage = '<tr><td><span class="glyphicon glyphicon-ok-sign"></span>&nbsp;';
+      insertUsername = '<span class="connected-user">' + data.users[i] + '</span></td></tr>';
+
+      var insert = insertImage + insertUsername;
+
+      $('#users-connections').append(insert);
     }
   });
 

@@ -3,6 +3,7 @@ module.exports = function(app, passport, LocalStrategy, io, redisClient) {
   var User = require('./models/user');
   var Deck = require('./models/flashcards.js');
   var subjectName;
+  var deckID;
 
   // Initiate PassportJS with the LocalStrategy
   passport.use(new LocalStrategy(
@@ -170,9 +171,13 @@ module.exports = function(app, passport, LocalStrategy, io, redisClient) {
     res.render('dashboard.ejs');
   });
 
-// What is using this?
+// HEREEE
   app.get('/editdeck', ensureAuthenticated, function(req, res) {
-    res.render('editdecks.ejs');
+
+
+
+
+    res.render('editdeck.ejs');
   });
 
   app.get('/editflashcards', ensureAuthenticated, function(req, res) {
@@ -376,17 +381,11 @@ module.exports = function(app, passport, LocalStrategy, io, redisClient) {
     });
   });
 
-
   app.post('/editdeck', function(req, res) {
-
-    var deckID = req.body.deckID;
+    deckID = req.body.deckID;
     console.log(deckID);
-
-    //READY TO ROCK'n'ROLLLLLLLLLLLLLLLLLLLL
-
-    res.render('editdecks.ejs');
+    res.render('editdeck.ejs');
   });
-
 
   app.post('/users/register', function(req, res) {
 

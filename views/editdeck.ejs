@@ -93,94 +93,41 @@
           </ul>
         </div>
 
-
-
-
-
         <div class="col-md-9 main">
           <h1 class="page-header">Edit Deck: <span id="deck-name"></span></h1>
+          <div class="col-md-12 col-md-offset-2">
+            <div class="row gallery js-flickity">
+              <div class="gallery-cell">
+                <div class="gallery-caption">
+                  <h4>
+                    Edit Your Cards <br>
+                    Slide to your desired card ->
+                  </h4>
+                </div>
+              </div>
+            </div>
+            <br><br>
+          </div>
           <div class="row">
-            <!-- Flickity HTML init -->
-            <div class="carousel" data-flickity='{ "imagesLoaded": true, "percentPosition": false }'>
-
-
-              <div class="carousel-cell">
-                <div class="full-entity">
-                  <div class="notecard-text">
-                    <h4>
-                      asdfasdfa
-                      asdfasd
-                      123
-                      123
-                      432
-                      432
-                      876876878678
-                    </h4>
-                  </div>
-                  <img class="img-responsive" src="img/notecard_white.jpeg" alt="white note card">
-                </div>
-              </div>
-
-              <div class="carousel-cell">
-                <div class="full-entity">
-                  <div class="notecard-text">
-                    <h4>
-                      This shit is not working fully
-                      the quick brown fox jumped over the  lazy
-                      dog big time
-                    </h4>
-                  </div>
-                  <img class="img-responsive" src="img/notecard_white.jpeg" alt="white note card">
-                </div>
-              </div>
-
-
-              <div class="carousel-cell">
-                <div class="full-entity">
-                  <div class="notecard-text">
-                    <h4>
-                      something new on deck
-                    </h4>
-                  </div>
-                  <img class="img-responsive" src="img/notecard_white.jpeg" alt="white note card">
-                </div>
-              </div>
-
-
-              <div class="carousel-cell">
-                <div class="full-entity">
-                  <div class="notecard-text">
-                    <h4>
-                      Something something something somethign something something something something something professionalism
-                    </h4>
-                  </div>
-                  <img class="img-responsive" src="img/notecard_white.jpeg" alt="white note card">
-                </div>
-              </div>
-
-              <div class="carousel-cell">
-                <div class="full-entity">
-                  <div class="notecard-text">
-                    <h4>
-                      analyze edit and interpret analyze edit and interpret analize and interpret
-                    </h4>
-                  </div>
-                  <img class="img-responsive" src="img/notecard_white.jpeg" alt="white note card">
-                </div>
-              </div>
-
+            <div class="col-md-12 col-md-offset-1 text-center">
+              <h5>Card Number:&nbsp;<span id="currentCard"></span>&nbsp;of&nbsp;<span id="totalNumberOfCards"></span></h5>
+              <button id="flipcard-btn" type="button" class="btn btn-primary">Flip Card</button>
+              <button id="editcard-btn" type="button" class="btn btn-primary">Edit Card</button>
+              <button id="addcard-btn" type="button" class="btn btn-success">Add New Card</button>
+              <button id="deletecard-btn" type="button" class="btn btn-danger">Delete Card</button>
             </div>
           </div>
-          <br><br>
-          <div class="text-center">
-            <button id="editCard-btn" type="button" class="btn btn-primary">Edit</button>
-            <button id="addCard-btn" type="button" class="btn btn-success">Add New Card</button>
-            <button id="deleteCard-btn" type="button" class="btn btn-danger">Delete Card</button>
-            <h5>Card Number:&nbsp;<span id="currentCard"></span>/<span id="totalNumberOfCards"></span></h5>
+          <br>
+
+          <div class="col-md-6 col-md-offset-4 text-center">
+            <div id="editcard-form">
+                <label for="newcardinfo">Add your new text for <span id="side"></span>:</label>
+                <textarea id="newcardinfo" class="form-control" type="text" name="newcardinfo"></textarea>
+                <button id="newcardinfo-btn" type="submit" class="btn btn-success">Save New Info</button>
+              </div>
+            </div>
           </div>
         </div>
-
-
       </div>
     </div>
     <script
@@ -189,6 +136,8 @@
       crossorigin="anonymous">
     </script>
     <script src="js/bootstrap.min.js"></script>
+
+
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <script src="js/assets/ie10-viewport-bug-workaround.js"></script>
 

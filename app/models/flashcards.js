@@ -40,8 +40,8 @@ Flashcard.getFlashcards = function(username, subject, callback) {
 
 // NEW Queries for THIRD ITERATION
 // FINDS THE DECK, callback contains removal of the card
-Flashcard.getSelectedDeck = function(cardID, callback) {
-  Flashcard.findById(cardID, callback);
+Flashcard.getSelectedDeck = function(deckID, callback) {
+  Flashcard.findById(deckID, callback);
 };
 
 // DELETES ENTIRE DECKS - READY FOR DEPLOYMENT

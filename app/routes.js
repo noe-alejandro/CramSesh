@@ -171,13 +171,20 @@ module.exports = function(app, passport, LocalStrategy, io, redisClient) {
     res.render('dashboard.ejs');
   });
 
-// HEREEE
   app.get('/editdeck', ensureAuthenticated, function(req, res) {
-
-
-
-
     res.render('editdeck.ejs');
+  });
+
+  app.get('/editdeck-getdeck', ensureAuthenticated, function(req, res) {
+    console.log(deckID);
+    Deck.getSelectedDeck(deckID, function(err, data) {
+      if(err) {
+        console.log(err);
+      }
+      else {
+        res.send(data);
+      }
+    });
   });
 
   app.get('/editflashcards', ensureAuthenticated, function(req, res) {
@@ -199,7 +206,6 @@ module.exports = function(app, passport, LocalStrategy, io, redisClient) {
   });
 
   app.get('/getflashcards', ensureAuthenticated, function(req, res) {
-
     redisClient.get('subject', function(err, reply) {
       if(err) {
         console.log(err);
@@ -385,6 +391,21 @@ module.exports = function(app, passport, LocalStrategy, io, redisClient) {
     deckID = req.body.deckID;
     console.log(deckID);
     res.render('editdeck.ejs');
+  });
+
+  app.post('/updateflashcard', function(req, res) {
+
+    var updateDeckID = req.body.deckID;
+    var updateCardID = req.body.cardID;
+    var cardSide = req.body.side;
+    var newCardInfo = req.body.newInfo;
+
+    console.log(updateDeckID);
+    console.log(updateCardID);
+    console.log(cardSide);
+    console.log(newCardInfo);
+
+    // ready to update the database
   });
 
   app.post('/users/register', function(req, res) {

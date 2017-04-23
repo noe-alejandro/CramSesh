@@ -137,9 +137,9 @@ module.exports = function(app, passport, LocalStrategy, io, redisClient) {
 // *************************** END OF TESTING *********************************
 // ****************************************************************************
 
-  // ******************************
-  // ******** GET ROUTES **********
-  // ******************************
+// ****************************************************************************
+// *********************** BEGINNING OF HTTP GET ROUTES ***********************
+// ****************************************************************************
 
   app.get('/', function(req, res) {
     res.render('index.ejs');
@@ -261,7 +261,7 @@ module.exports = function(app, passport, LocalStrategy, io, redisClient) {
     res.render('register.ejs');
   });
 
-  app.get('/viewdeck', function(req, res) {
+  app.get('/viewdeck', ensureAuthenticated, function(req, res) {
     var username = req.user.username;
     Deck.getDecks(username, function(err, data) {
       if(err) {
@@ -282,20 +282,22 @@ module.exports = function(app, passport, LocalStrategy, io, redisClient) {
     });
   });
 
-  app.get('/viewflashcards', function(req, res) {
+  app.get('/viewflashcards', ensureAuthenticated, function(req, res) {
     res.render('viewflashcards.ejs');
   });
 
-  // ******************************
-  // ******** POST ROUTES *********
-  // ******************************
+// ****************************************************************************
+// ********************** BEGINNING OF HTTP POST ROUTES ***********************
+// ****************************************************************************
+
   app.post('/contactteam', function(req, res) {
 
     var name = req.body.name;
     var mess = req.body.mess;
 
-    console.log("message coming from: " + name);
-    console.log("message text: " + mess);
+    console.log("Contact form message coming from: " + name);
+    console.log('Email:' + email);
+    console.log("message text: " + userMessage);
 
     req.flash('success_msg', 'Your message has been sent. Please wait 24 hours for a response.');
     res.redirect('/contact');
@@ -378,11 +380,10 @@ module.exports = function(app, passport, LocalStrategy, io, redisClient) {
 
     Deck.removeDeck(id, function(err, data) {
       if(err) {
-        console.log(err);
+        console.log('MongoDB query failed, please check errors:\n' + err);
       }
       else {
-        console.log(data);
-        //res.send(data);
+        console.log('Deck has been deleted: ' + data);
       }
     });
   });
@@ -405,7 +406,39 @@ module.exports = function(app, passport, LocalStrategy, io, redisClient) {
     console.log(cardSide);
     console.log(newCardInfo);
 
-    // ready to update the database
+    if(cardSide === 'front') {
+      // Update the database with new front info
+      Deck.updateFrontFlashcard(updateDeckID, updateCardID, newCardInfo, function(err, data) {
+        if(err) {
+          console.log(err);
+        }
+        else {
+          console.log('New card front side info has been saved!');
+          console.log(data);
+
+          // Send confirmation to the client
+          res.send({"data" : 'Your new front side has been saved! :)'});
+        }
+      });
+    }
+    else if(cardSide === 'back') {
+      // Update the database with new back info
+      Deck.updateBackFlashcard(updateDeckID, updateCardID, newCardInfo, function(err, data) {
+        if(err) {
+          console.log(err);
+        }
+        else {
+          console.log('New card back side info has been saved!');
+          console.log(data);
+
+          // Send confirmation to the client
+          res.send({"data" : 'Your new back side has been saved! :)'});
+        }
+      });
+    }
+    else {
+      console.log('An error has occured');
+    }
   });
 
   app.post('/users/register', function(req, res) {
@@ -428,14 +461,14 @@ module.exports = function(app, passport, LocalStrategy, io, redisClient) {
     var errors = req.validationErrors();
 
     if(errors) {
-      console.log("YES ERRORS");
+      console.log('Form contains errors. Do not process!');
       console.log(errors);
       console.log(typeof(errors));
       res.render('register.ejs', {errors: errors});
     }
     else {
 
-      console.log('No Errors!');
+      console.log('Form contains no errors. Ready for processing..');
 
       var newUser = new User({
         full_name: fullname,
@@ -472,7 +505,10 @@ module.exports = function(app, passport, LocalStrategy, io, redisClient) {
     });
   });
 
-  // SOCKET.IO ROUTES
+// ****************************************************************************
+// *********************** BEGINNING OF SOCKET.IO ROUTES ***********************
+// ****************************************************************************
+
   io.on('connection', function(socket) {
     // BROADCAST USERNAME THAT CONNECTED
     socket.on('user connection', function(data) {

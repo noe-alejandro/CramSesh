@@ -85,13 +85,13 @@ var $main = function() {
           console.log("This is the front");
           $('#side').empty();
           $('#side').html('front');
-          var side = "front";
+          side = "front";
         }
         else if(back === text) {
           console.log("this is the back");
           $('#side').empty();
           $('#side').html('back');
-          var side = "back";
+          side = "back";
         }
         else {
           console.log("an error has occured.")
@@ -105,6 +105,7 @@ var $main = function() {
 
           var newCardInfo = $('#newcardinfo').val();
           console.log(newCardInfo);
+          console.log("card side: " + side);
 
           var data = {
             "deckID" : deckID,
@@ -124,8 +125,10 @@ var $main = function() {
             dataType : 'json',
             success : function(data) {
 
-              console.log("looking good")
+              console.log(data.data);
 
+              // Re-fresh the page
+              window.location.reload();
 
             }
           });

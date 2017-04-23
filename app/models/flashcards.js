@@ -34,6 +34,30 @@ Flashcard.getFlashcards = function(username, subject, callback) {
   Flashcard.findOne({"owner" : username, "subject" : subject}, callback);
 };
 
+// Update front flashcard info
+Flashcard.updateFrontFlashcard = function(deckID, cardID, newFront, callback) {
+
+  Flashcard.findOneAndUpdate({"_id" : deckID, "cards._id" : cardID },
+  {
+    $set: {"cards.$.front" : newFront}
+  },
+  callback);
+};
+
+// Update back flashcard info
+Flashcard.updateBackFlashcard = function(deckID, cardID, newBack, callback) {
+
+  Flashcard.findOneAndUpdate({"_id" : deckID, "cards._id" : cardID },
+  {
+    $set: {"cards.$.back" : newBack}
+  },
+  callback);
+};
+
+
+
+
+
 // ****************************************************************************
 // ************************** BEGINNING OF TESTING ****************************
 // ****************************************************************************
@@ -51,14 +75,14 @@ Flashcard.removeDeck = function(deckID, callback) {
 };
 
 // UPDATES A CURRENT FLASHCARD
-Flashcard.updateFlashcard = function(deckID, cardID, newFront, newBack, callback) {
+/*Flashcard.updateFrontFlashcard = function(deckID, cardID, newFront, newBack, callback) {
 
   Flashcard.findOneAndUpdate({"_id" : deckID, "cards._id" : cardID },
   {
     $set: {"cards.$.front" : newFront, "cards.$.back" : newBack}
   },
   callback);
-};
+};*/
 
 Flashcard.updateDeckName = function(deckID, newSubjectName, callback) {
 

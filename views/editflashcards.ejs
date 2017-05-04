@@ -20,6 +20,7 @@
     <!-- Custom styles for this template -->
     <link href="css/dashboard-style.css" rel="stylesheet">
     <link href="css/editflashards-style.css" rel="stylesheet">
+    <link href="css/sidebar-style.css" rel="stylesheet">
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -52,46 +53,54 @@
         </div><!--/.nav-collapse -->
       </div>
     </nav>
-    <div class="container-fluid">
-      <div class="row">
-        <div class="col-sm-2 sidebar">
-          <ul class="nav nav-sidebar">
-            <li>
-              <a class="sidebitch" href="/profile">
-                <span class="glyphicon glyphicon-user"></span>
-                &nbsp;&nbsp;&nbsp;Profile
-              </a>
-            </li>
-            <li>
-              <a class="sidebitch" href="/createdeck">
-                <span class="glyphicon glyphicon-plus"></span>
-                &nbsp;&nbsp;&nbsp;Create Flashcards
-              </a>
-            </li>
-            <li>
-              <a class="sidebitch" href="/editflashcards">
-                <span class="glyphicon glyphicon-edit"></span>
-                &nbsp;&nbsp;&nbsp;Edit Flashcards
-              </a>
-            </li>
-            <li>
-              <a class="sidebitch" href="/studyarea">
-                <span class="glyphicon glyphicon-book"></span>
-                &nbsp;&nbsp;&nbsp;Study
-              </a>
-            </li>
-            <li>
-              <a class="sidebitch" href="/chatroom">
-                <span class="glyphicon glyphicon-comment"></span>
-                &nbsp;&nbsp;&nbsp;Chat
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div class="col-md-9 main">
-          <h1 class="page-header">Edit Flashcards</h1>
-          <h2>Pick the deck you want to edit.</h2>
-            <table class="table table-striped">
+    <div id="wrapper">
+      <!-- Sidebar -->
+      <div id="sidebar-wrapper">
+        <ul class="sidebar-nav">
+          <li class="sidebar-brand">
+            <a>Menu</a>
+          </li>
+          <li>
+            <a class="side-kg" href="/profile">
+              <span class="glyphicon glyphicon-user"></span>
+              &nbsp;&nbsp;&nbsp;Profile
+            </a>
+          </li>
+          <li>
+            <a class="side-kg" href="/createdeck">
+              <span class="glyphicon glyphicon-plus"></span>
+              &nbsp;&nbsp;&nbsp;Create Flashcards
+            </a>
+          </li>
+          <li>
+            <a class="side-kg" href="/editflashcards">
+              <span class="glyphicon glyphicon-edit"></span>
+              &nbsp;&nbsp;&nbsp;Edit Flashcards
+            </a>
+          </li>
+          <li>
+            <a class="side-kg" href="/studyarea">
+              <span class="glyphicon glyphicon-book"></span>
+              &nbsp;&nbsp;&nbsp;Study
+            </a>
+          </li>
+          <li>
+            <a class="side-kg" href="/chatroom">
+              <span class="glyphicon glyphicon-comment"></span>
+              &nbsp;&nbsp;&nbsp;Chat
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <div id="page-content-wrapper">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-md-12 main">
+              <h1 class="page-header">
+                Edit Flashcards
+              </h1>
+              <table class="table table-striped">
                 <thead>
                   <tr>
                     <th>Deck Name</th>
@@ -101,12 +110,13 @@
                   </tr>
                 </thead>
                 <tbody id="insert-deck-info">
-
                 </tbody>
               </table>
+            </div>
           </div>
         </div>
       </div>
+    </div>
     <script
       src="https://code.jquery.com/jquery-3.1.1.js"
       integrity="sha256-16cdPddA6VdVInumRGo6IbivbERE8p7CQR3HzTBuELA="
@@ -117,5 +127,6 @@
 
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <script src="js/assets/ie10-viewport-bug-workaround.js"></script>
+    <script src="js/sidebar.js"></script>
   </body>
 </html>

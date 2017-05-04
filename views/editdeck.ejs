@@ -23,6 +23,7 @@
     <!-- Custom styles for this template -->
     <link href="css/dashboard-style.css" rel="stylesheet">
     <link href="css/editdeck-style.css" rel="stylesheet">
+    <link href="css/sidebar-style.css" rel="stylesheet">
 
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
@@ -56,74 +57,86 @@
         </div><!--/.nav-collapse -->
       </div>
     </nav>
-    <div class="container-fluid">
-      <div class="row">
-        <div class="col-sm-2 sidebar">
-          <ul class="nav nav-sidebar">
-            <li>
-              <a class="sidebitch" href="/profile">
-                <span class="glyphicon glyphicon-user"></span>
-                &nbsp;&nbsp;&nbsp;Profile
-              </a>
-            </li>
-            <li>
-              <a class="sidebitch" href="/createdeck">
-                <span class="glyphicon glyphicon-plus"></span>
-                &nbsp;&nbsp;&nbsp;Create Flashcards
-              </a>
-            </li>
-            <li>
-              <a class="sidebitch" href="/editflashcards">
-                <span class="glyphicon glyphicon-edit"></span>
-                &nbsp;&nbsp;&nbsp;Edit Flashcards
-              </a>
-            </li>
-            <li>
-              <a class="sidebitch" href="/studyarea">
-                <span class="glyphicon glyphicon-book"></span>
-                &nbsp;&nbsp;&nbsp;Study
-              </a>
-            </li>
-            <li>
-              <a class="sidebitch" href="/chatroom">
-                <span class="glyphicon glyphicon-comment"></span>
-                &nbsp;&nbsp;&nbsp;Chat
-              </a>
-            </li>
-          </ul>
-        </div>
-
-        <div class="col-md-9 main">
-          <h1 class="page-header">Edit Deck: <span id="deck-name"></span></h1>
-          <div class="col-md-12 col-md-offset-2">
-            <div class="row gallery js-flickity">
-              <div class="gallery-cell">
-                <div class="gallery-caption">
-                  <h4>
-                    Edit Your Cards <br>
-                    Slide to your desired card ->
-                  </h4>
+    <div id="wrapper">
+      <!-- Sidebar -->
+      <div id="sidebar-wrapper">
+        <ul class="sidebar-nav">
+          <li class="sidebar-brand">
+            <a>Menu</a>
+          </li>
+          <li>
+            <a class="side-kg" href="/profile">
+              <span class="glyphicon glyphicon-user"></span>
+              &nbsp;&nbsp;&nbsp;Profile
+            </a>
+          </li>
+          <li>
+            <a class="side-kg" href="/createdeck">
+              <span class="glyphicon glyphicon-plus"></span>
+              &nbsp;&nbsp;&nbsp;Create Flashcards
+            </a>
+          </li>
+          <li>
+            <a class="side-kg" href="/editflashcards">
+              <span class="glyphicon glyphicon-edit"></span>
+              &nbsp;&nbsp;&nbsp;Edit Flashcards
+            </a>
+          </li>
+          <li>
+            <a class="side-kg" href="/studyarea">
+              <span class="glyphicon glyphicon-book"></span>
+              &nbsp;&nbsp;&nbsp;Study
+            </a>
+          </li>
+          <li>
+            <a class="side-kg" href="/chatroom">
+              <span class="glyphicon glyphicon-comment"></span>
+              &nbsp;&nbsp;&nbsp;Chat
+            </a>
+          </li>
+        </ul>
+      </div>
+      <div id="page-content-wrapper">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-md-12 main">
+              <h1 class="page-header">Edit Deck: <span id="deck-name"></span></h1>
+              <div class="col-md-12 col-md-offset-2">
+                <div class="row gallery js-flickity">
+                  <div class="gallery-cell">
+                    <div class="gallery-caption">
+                      <h4>
+                        Edit Your Cards <br>
+                        Slide to your desired card ->
+                      </h4>
+                    </div>
+                  </div>
+                </div>
+                <br><br>
+              </div>
+              <div class="row">
+                <div class="col-md-12 col-md-offset-1 text-center">
+                  <h5>Card Number:&nbsp;<span id="currentCard"></span>&nbsp;of&nbsp;<span id="totalNumberOfCards"></span></h5>
+                  <button id="flipcard-btn" type="button" class="btn btn-primary">Flip Card</button>
+                  <button id="editcard-btn" type="button" class="btn btn-primary">Edit Card</button>
+                  <button id="addcard-btn" type="button" class="btn btn-success">Add New Card</button>
+                  <button id="deletecard-btn" type="button" class="btn btn-danger">Delete Card</button>
                 </div>
               </div>
-            </div>
-            <br><br>
-          </div>
-          <div class="row">
-            <div class="col-md-12 col-md-offset-1 text-center">
-              <h5>Card Number:&nbsp;<span id="currentCard"></span>&nbsp;of&nbsp;<span id="totalNumberOfCards"></span></h5>
-              <button id="flipcard-btn" type="button" class="btn btn-primary">Flip Card</button>
-              <button id="editcard-btn" type="button" class="btn btn-primary">Edit Card</button>
-              <button id="addcard-btn" type="button" class="btn btn-success">Add New Card</button>
-              <button id="deletecard-btn" type="button" class="btn btn-danger">Delete Card</button>
-            </div>
-          </div>
-          <br>
-
-          <div class="col-md-6 col-md-offset-4 text-center">
-            <div id="editcard-form">
-                <label for="newcardinfo">Add your new text for <span id="side"></span>:</label>
-                <textarea id="newcardinfo" class="form-control" type="text" name="newcardinfo"></textarea>
-                <button id="newcardinfo-btn" type="submit" class="btn btn-success">Save New Info</button>
+              <br>
+              <div class="col-md-6 col-md-offset-4 text-center">
+                <div id="editcard-form">
+                  <label for="newcardinfo">Add your new text for <span id="side"></span>:</label>
+                  <textarea id="newcardinfo" class="form-control" type="text" name="newcardinfo"></textarea>
+                  <button id="newcardinfo-btn" type="submit" class="btn btn-success">Save New Info</button>
+                </div>
+                <div id="addnewcard-form">
+                  <label for="newFront">Add your new text for the front:</label>
+                  <textarea id="newFront" class="form-control" type="text" name="newFront"></textarea>
+                  <label for="newFront">Add your new text for the back:</label>
+                  <textarea id="newBack" class="form-control" type="text" name="newBack"></textarea>
+                  <button id="addnewcard-btn" type="submit" class="btn btn-success">Create New Card</button>
+                </div>
               </div>
             </div>
           </div>
@@ -136,14 +149,11 @@
       crossorigin="anonymous">
     </script>
     <script src="js/bootstrap.min.js"></script>
-
-
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <script src="js/assets/ie10-viewport-bug-workaround.js"></script>
-
     <!-- Flickity API-->
     <script src="https://unpkg.com/flickity@2/dist/flickity.pkgd.min.js"></script>
-
     <script src="js/editdeck.js"></script>
+    <script src="js/sidebar.js"></script>
   </body>
 </html>

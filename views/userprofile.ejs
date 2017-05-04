@@ -19,6 +19,7 @@
 
     <!-- Custom styles for this template -->
     <link href="css/dashboard-style.css" rel="stylesheet">
+    <link href="css/sidebar-style.css" rel="stylesheet">
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -51,52 +52,61 @@
         </div><!--/.nav-collapse -->
       </div>
     </nav>
-    <div class="container-fluid">
-      <div class="row">
-        <div id="" class="col-sm-2 sidebar">
-          <ul class="nav nav-sidebar">
-            <li>
-              <a class="sidebitch" href="/profile">
-                <span class="glyphicon glyphicon-user"></span>
-                &nbsp;&nbsp;&nbsp;Profile
-              </a>
-            </li>
-            <li>
-              <a class="sidebitch" href="/createdeck">
-                <span class="glyphicon glyphicon-plus"></span>
-                &nbsp;&nbsp;&nbsp;Create Flashcards
-              </a>
-            </li>
-            <li>
-              <a class="sidebitch" href="/editflashcards">
-                <span class="glyphicon glyphicon-edit"></span>
-                &nbsp;&nbsp;&nbsp;Edit Flashcards
-              </a>
-            </li>
-            <li>
-              <a class="sidebitch" href="/studyarea">
-                <span class="glyphicon glyphicon-book"></span>
-                &nbsp;&nbsp;&nbsp;Study
-              </a>
-            </li>
-            <li>
-              <a class="sidebitch" href="/chatroom">
-                <span class="glyphicon glyphicon-comment"></span>
-                &nbsp;&nbsp;&nbsp;Chat
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div class="col-md-8 main">
-          <h1 class="page-header">Profile</h1>
-          <div class="row">
-            <div class="col-md-4">
-              <img src="img/emptyprofile.jpeg" alt="" class="img-circle">
-            </div>
-            <div id="userInfo" class="col-md-6">
-              <p class="lead">Name : <span id="fullname"></span></p>
-              <p class="lead">Username : <span id="username"></span></p>
-              <p class="lead">Email : <span id="email"></span></p>
+
+    <div class="wrapper">
+      <div id="sidebar-wrapper">
+        <ul class="sidebar-nav">
+          <li class="sidebar-brand">
+            <a>Menu</a>
+          </li>
+          <li>
+            <a class="side-kg" href="/profile">
+              <span class="glyphicon glyphicon-user"></span>
+              &nbsp;&nbsp;&nbsp;Profile
+            </a>
+          </li>
+          <li>
+            <a class="side-kg" href="/createdeck">
+              <span class="glyphicon glyphicon-plus"></span>
+              &nbsp;&nbsp;&nbsp;Create Flashcards
+            </a>
+          </li>
+          <li>
+            <a class="side-kg" href="/editflashcards">
+              <span class="glyphicon glyphicon-edit"></span>
+              &nbsp;&nbsp;&nbsp;Edit Flashcards
+            </a>
+          </li>
+          <li>
+            <a class="side-kg" href="/studyarea">
+              <span class="glyphicon glyphicon-book"></span>
+              &nbsp;&nbsp;&nbsp;Study
+            </a>
+          </li>
+          <li>
+            <a class="side-kg" href="/chatroom">
+              <span class="glyphicon glyphicon-comment"></span>
+              &nbsp;&nbsp;&nbsp;Chat
+            </a>
+          </li>
+        </ul>
+      </div>
+      <div class="page-content-wrapper">
+        <div class="container-fluid">
+          <div class="col-md-12 main">
+            <h1 class="page-header">Profile</h1>
+
+            <a href="#menu-toggle" class="btn btn-default" id="menu-toggle">Toggle Menu</a>
+
+            <div class="row">
+              <div class="col-md-4">
+                <img src="img/emptyprofile.jpeg" alt="profile-picture" class="img-circle">
+              </div>
+              <div id="userInfo" class="col-md-6">
+                <p class="lead">Name : <span id="fullname"></span></p>
+                <p class="lead">Username : <span id="username"></span></p>
+                <p class="lead">Email : <span id="email"></span></p>
+              </div>
             </div>
           </div>
         </div>
@@ -108,8 +118,10 @@
       crossorigin="anonymous">
     </script>
     <script src="js/bootstrap.min.js"></script>
+    <script src="js/userprofile.js"></script>
+    <script src="js/sidebar.js"></script>
+
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <script src="js/assets/ie10-viewport-bug-workaround.js"></script>
-    <script src="js/userprofile.js"></script>
   </body>
 </html>

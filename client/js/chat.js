@@ -62,6 +62,7 @@ var $main = function() {
     insertMessage += chatHeaderBegin + strongUsername + smallMutedBegin + glyph;
     insertMessage += timeSent + smallMutedEnd + chatHeaderEnd + messageParaBegin;
     insertMessage += userMessage + messageParaEnd + chatBodyEnd + listEnd;
+
     $('#chat').append(insertMessage);
   });
 

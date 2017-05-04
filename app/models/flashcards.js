@@ -26,6 +26,10 @@ Flashcard.saveFlashcard = function(username, subjectName, front, back, callback)
   Flashcard.findOne({"owner" : username, "subject" : subjectName}, callback);
 };
 
+Flashcard.saveNewFlashcard = function(cardID, front, back, callback) {
+  Flashcard.findOne({"_id" : cardID}, callback);
+};
+
 Flashcard.getDecks = function(username, callback) {
   Flashcard.find({"owner": username}, callback);
 };

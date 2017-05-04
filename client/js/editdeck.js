@@ -1,4 +1,5 @@
 $('#editcard-form').hide();
+$('#addnewcard-form').hide();
 
 var $main = function() {
   $.ajax({
@@ -27,7 +28,7 @@ var $main = function() {
         $('.js-flickity').flickity('insert', $insertCell, i + 1);
       }
 
-      // FLIP ALGORITHM
+      // **** FLIP ALGORITHM
       $('#flipcard-btn').on('click', function() {
         var notecardIndex = flkty.selectedIndex - 1;
         console.log(notecardIndex);
@@ -56,9 +57,9 @@ var $main = function() {
             console.log("an error has occured.");
           }
         }
-      });
+      }); // End of Flip Card Algorithm
 
-      // EDIT ALGORITHM
+      // **** EDIT ALGORITHM
       $('#editcard-btn').on('click', function() {
 
         // Activate the textbox GUI
@@ -107,33 +108,105 @@ var $main = function() {
           console.log(newCardInfo);
           console.log("card side: " + side);
 
-          var data = {
+          var newCardData = {
             "deckID" : deckID,
             "cardID" : cardID,
             "side" : side,
             "newInfo" : newCardInfo
           };
 
-          console.log(data);
+          console.log(newCardData);
 
           // Send the data for the updated card to the server.
           $.ajax({
             method : 'POST',
             url : '/updateflashcard',
-            data : JSON.stringify(data),
+            data : JSON.stringify(newCardData),
             contentType : 'application/json',
             dataType : 'json',
-            success : function(data) {
-
-              console.log(data.data);
-
+            success : function(newCardData) {
+              console.log(newCardData);
               // Re-fresh the page
               window.location.reload();
-
             }
           });
         });
-      });
+      }); // End of Edit Algorithm
+
+      // **** ADD NEW CARD ALGORITHM
+      $('#addcard-btn').on('click', function() {
+
+        // Get the deck id
+        var deckID = data._id;
+        console.log(deckID);
+
+        // show form for new card
+        $('#addnewcard-form').show(2000);
+
+        $('#addnewcard-btn').on('click', function() {
+
+          var front = $('#newFront').val();
+          var back = $('#newBack').val();
+
+          console.log(deckID);
+
+          var createNewCardData = {
+            "deckID" : deckID,
+            "front" : front,
+            "back" : back
+          };
+
+          // Send the data for the updated card to the server.
+          $.ajax({
+            method : 'POST',
+            url : '/createnewflashcards',
+            data : JSON.stringify(createNewCardData),
+            contentType : 'application/json',
+            dataType : 'json',
+            success : function(data) {
+              console.log(data.cardCreated);
+
+              // Re-fresh the page
+              window.location.reload();
+            }
+          });
+        });
+      }); // End of Create New Card
+
+      // DELETE CARD ALGORITHM
+      $('#deletecard-btn').on('click', function() {
+
+        // Get the slide / card index
+        var notecardIndex = flkty.selectedIndex - 1;
+        console.log(notecardIndex);
+
+        var cardID = data.cards[notecardIndex]._id;
+        console.log(cardID);
+
+        // Get the deck id
+        var deckID = data._id;
+        console.log(deckID);
+
+        var deleteDeckID = {
+          "deckID" : deckID,
+          "cardID" : cardID
+        };
+
+        // Send the data for the updated card to the server.
+        $.ajax({
+          method : 'POST',
+          url : '/deleteflashcard',
+          data : JSON.stringify(deleteDeckID),
+          contentType : 'application/json',
+          dataType : 'json',
+          success : function(data) {
+
+            console.log(data.cardDelete);
+            // Re-fresh the page
+            window.location.reload();
+          }
+        });
+      }); //END of DELETE CARD ALGORITHM
     }
   });
 };

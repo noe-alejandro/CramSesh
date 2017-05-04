@@ -30,7 +30,7 @@
   font-size: 40px;
 }
 
-#newcardinfo {
+#newcardinfo, #newFront, #newBack {
   background-image: url('../img/notecard_white.jpeg');
   background-repeat: no-repeat;
   background-size: contain;

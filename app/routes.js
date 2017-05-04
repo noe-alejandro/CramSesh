@@ -52,71 +52,6 @@ module.exports = function(app, passport, LocalStrategy, io, redisClient) {
 // ************************** BEGINNING OF TESTING ****************************
 // ****************************************************************************
 
-  // TESTING AREA: Mongoose queries for deleting and updating
-
-  // delete entire deck
-  app.get('/removedeck', function(req, res) {
-
-    var deckID = "58db4ab246ab970d718d8883";
-
-    Deck.removeDeck(deckID, function(err, data) {
-      if(err) {
-        console.log(err);
-      }
-      else {
-        console.log(data);
-        res.send(data);
-      }
-    });
-  });
-
-  // delete flashcard
-  app.get('/removeflashcard', function(req, res) {
-
-    var deckID = "58db5115eafb710e03af64b4";
-
-    // get the correct deck seleted by the user (ajax call)
-    Deck.getSelectedDeck(deckID, function(err, deck) {
-      if(err) {
-        console.log(err);
-      } else {
-
-        // carId will be passed through the ajax call
-        var cardID = "58db511eeafb710e03af64b5";
-
-        // find the card with the cardID and remove it
-        deck.cards.id(cardID).remove();
-
-        // save the deck
-        deck.save(function(err) {
-          if(err) {
-            console.log(err);
-          } else {
-            console.log("Flashcard was removed!");
-          }
-        });
-      }
-    });
-  });
-
-  // edit particular flashcard
-  app.get('/editflashcard', function(req, res) {
-
-    var deckID = "58db5115eafb710e03af64b4";
-    var cardID = "58db5124eafb710e03af64b6";
-
-    var newFront = "You got hacked";
-    var newBack = "by yours truly";
-
-    Deck.updateFlashcard(deckID, cardID, newFront, newBack, function(err, data) {
-      if(err){
-        console.log(err);
-      } else {
-        console.log(data);
-      }
-    });
-  });
-
   // edit subject (deck) name
   app.get('/editdeckname', function(req, res) {
 
@@ -373,6 +308,39 @@ module.exports = function(app, passport, LocalStrategy, io, redisClient) {
     }
   });
 
+  app.post('/createnewflashcards', function(req, res) {
+
+    // Get username
+    var username = req.user.username;
+
+    // Get data from the client
+    var deckID = req.body.deckID;
+    var front = req.body.front;
+    var back = req.body.back;
+    //console.log(username);
+    console.log(deckID);
+    console.log(front);
+    console.log(back);
+
+    Deck.saveNewFlashcard(deckID, front, back, function(err, data) {
+      if(err) {
+        console.log(err);
+      }
+      else {
+        console.log(data);
+        data.cards.push({front: front, back: back});
+        data.save(function(err) {
+          if(err) {
+            console.log(err);
+          }
+          else {
+            res.send({"cardCreated" : "New card has been created!"});
+          }
+        });
+      }
+    });
+  });
+
   app.post('/deletedeck', function(req, res) {
 
     var id = req.body.deckID;
@@ -388,10 +356,50 @@ module.exports = function(app, passport, LocalStrategy, io, redisClient) {
     });
   });
 
+  // delete flashcard
+  app.post('/deleteflashcard', function(req, res) {
+
+    var deckID = req.body.deckID;
+    var cardID = req.body.cardID;
+
+    // get the correct deck seleted by the user (ajax call)
+    Deck.getSelectedDeck(deckID, function(err, deck) {
+      if(err) {
+        console.log(err);
+      } else {
+
+        // find the card with the cardID and remove it
+        deck.cards.id(cardID).remove();
+
+        // save the deck
+        deck.save(function(err) {
+          if(err) {
+            console.log(err);
+          } else {
+            console.log("Flashcard was removed!");
+            res.send({"cardDelete" : "Flashcard has been delete!"});
+          }
+        });
+      }
+    });
+  });
+
   app.post('/editdeck', function(req, res) {
     deckID = req.body.deckID;
     console.log(deckID);
     res.render('editdeck.ejs');
+  });
+
+  app.post('/matching', function(req, res) {
+    deckID = req.body.deckID;
+    console.log(deckID);
+    res.render('matching.ejs');
+  });
+
+  app.post('/studydeck', function(req, res) {
+    deckID = req.body.deckID;
+    console.log(deckID);
+    res.render('studydeck.ejs');
   });
 
   app.post('/updateflashcard', function(req, res) {

@@ -19,6 +19,7 @@
     <!-- Custom styles for this template -->
     <link href="css/dashboard-style.css" rel="stylesheet">
     <link href="css/chat-style.css" rel="stylesheet">
+    <link href="css/sidebar-style.css" rel="stylesheet">
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -51,86 +52,80 @@
         </div><!--/.nav-collapse -->
       </div>
     </nav>
-
-
-    <div class="container-fluid">
-      <div class="row">
-
-
-        <div class="col-sm-3 col-sm-2 sidebar">
-          <ul class="nav nav-sidebar">
-            <li>
-              <a class="sidebitch" href="/profile">
-                <span class="glyphicon glyphicon-user"></span>
-                &nbsp;&nbsp;&nbsp;Profile
-              </a>
-            </li>
-            <li>
-              <a class="sidebitch" href="/createdeck">
-                <span class="glyphicon glyphicon-plus"></span>
-                &nbsp;&nbsp;&nbsp;Create Flashcards
-              </a>
-            </li>
-            <li>
-              <a class="sidebitch" href="/editflashcards">
-                <span class="glyphicon glyphicon-edit"></span>
-                &nbsp;&nbsp;&nbsp;Edit Flashcards
-              </a>
-            </li>
-            <li>
-              <a class="sidebitch" href="/studyarea">
-                <span class="glyphicon glyphicon-book"></span>
-                &nbsp;&nbsp;&nbsp;Study
-              </a>
-            </li>
-            <li>
-              <a class="sidebitch" href="/chatroom">
-                <span class="glyphicon glyphicon-comment"></span>
-                &nbsp;&nbsp;&nbsp;Chat
-              </a>
-            </li>
-          </ul>
-        </div>
-
-
-        <div class="col-md-8 main">
-          <div class="panel panel-default">
-            <div class="panel-heading">
-              General Chat&nbsp;&nbsp;<span class="glyphicon glyphicon-comment"></span>
+    <div id="wrapper">
+      <!-- Sidebar -->
+      <div id="sidebar-wrapper">
+        <ul class="sidebar-nav">
+          <li class="sidebar-brand">
+            <a>Menu</a>
+          </li>
+          <li>
+            <a class="side-kg" href="/profile">
+              <span class="glyphicon glyphicon-user"></span>
+              &nbsp;&nbsp;&nbsp;Profile
+            </a>
+          </li>
+          <li>
+            <a class="side-kg" href="/createdeck">
+              <span class="glyphicon glyphicon-plus"></span>
+              &nbsp;&nbsp;&nbsp;Create Flashcards
+            </a>
+          </li>
+          <li>
+            <a class="side-kg" href="/editflashcards">
+              <span class="glyphicon glyphicon-edit"></span>
+              &nbsp;&nbsp;&nbsp;Edit Flashcards
+            </a>
+          </li>
+          <li>
+            <a class="side-kg" href="/studyarea">
+              <span class="glyphicon glyphicon-book"></span>
+              &nbsp;&nbsp;&nbsp;Study
+            </a>
+          </li>
+          <li>
+            <a class="side-kg" href="/chatroom">
+              <span class="glyphicon glyphicon-comment"></span>
+              &nbsp;&nbsp;&nbsp;Chat
+            </a>
+          </li>
+        </ul>
+      </div>
+      <div id="page-content-wrapper">
+        <div class="container-fluid">
+          <div id="general-chat" class="row">
+            <div class="col-md-8 main">
+              <div class="panel panel-default">
+                <div class="panel-heading">
+                  General Chat&nbsp;&nbsp;<span class="glyphicon glyphicon-comment"></span>
+                </div>
+              </div>
+              <div class="panel-body">
+                <ul id="chat" class="chat">
+                </ul>
+              </div>
+              <div class="panel-footer">
+                <div class="input-group">
+                  <input id="chat-input" type="text" class="form-control" placeholder="Type your message here..." />
+                  <span class="input-group-btn">
+                    <button class="btn btn-success" id="btn-chat">Send</button>
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div id="chat-list" class="col-md-3">
+              <table class="table table-striped">
+                <thead>
+                  <tr>
+                    <th id="connections">Users Connected</th>
+                  </tr>
+                </thead>
+                <tbody id="users-connections">
+                </tbody>
+              </table>
             </div>
           </div>
-          <div class="panel-body">
-            <ul id="chat" class="chat">
-            </ul>
-          </div>
-          <div class="panel-footer">
-            <div class="input-group">
-              <input id="chat-input" type="text" class="form-control" placeholder="Type your message here..." />
-              <span class="input-group-btn">
-                <button class="btn btn-success" id="btn-chat">Send</button>
-              </span>
-            </div>
-          </div>
-
         </div>
-
-        <div class="col-md-2 main">
-
-            <table class="table table-striped">
-              <thead>
-                <tr>
-                  <th id="connections">Users Connected</th>
-                </tr>
-              </thead>
-              <tbody id="users-connections">
-
-              </tbody>
-            </table>
-
-        </div>
-
-
-
       </div>
     </div>
     <script
@@ -144,5 +139,6 @@
     <!-- Socket.IO -->
     <script src="/socket.io/socket.io.js"></script>
     <script src="js/chat.js"></script>
+    <script src="js/sidebar.js"></script>
   </body>
 </html>

@@ -6,6 +6,7 @@ Cram-Sesh
 1. MongoDB version 3.2.1 and above
 1. Redis version3.2.4 and above
 1. Git 1.9.1 and above
+1. Cloudinary Account with API keys
 
 ### Installation
 Turn on MongoDB <br>

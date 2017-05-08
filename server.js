@@ -27,6 +27,13 @@ var storage = multer.diskStorage({
   }
 });
 
+// Cloudinary Keys
+cloudinary.config({
+  cloud_name: 'your_keys_here...',
+  api_key:'your_keys_here...',
+  api_secret: 'your_keys_here...'
+});
+
 var upload = multer({ storage : storage });
 
 // Initiate Application

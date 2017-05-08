@@ -1,6 +1,5 @@
 var $main = function() {
 
-  //var socket = io.connect('http://162.243.128.235:3000');
   var socket = io.connect('http://localhost:3000');
   //var socket = io();
 

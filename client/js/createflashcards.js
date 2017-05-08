@@ -24,10 +24,6 @@ var $main = function() {
       dataType : 'json',
       success : function(data) {
 
-        // Damn, no need for this then
-        console.log(data.subject);
-        console.log(data.flashcard_msg);
-
         ++numberOfCards;
         var flashcardSucessMessageBegin = '<div id="alert" class="alert alert-info fade in">';
         var message = 'Total number of flashcards created: ' + numberOfCards;

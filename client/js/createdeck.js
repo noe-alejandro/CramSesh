@@ -3,7 +3,6 @@ var $main = function() {
   var uploadArea = $('#uploadArea');
 
   function addImageUploadForm() {
-    console.log("updating...");
     var startDiv = '<div class="form-group">';
     var label = '<label for="exampleInputFile">File input</label>';
     var inputType = '<input type="file" id="imageCoverUpload" name="imageCoverUpload">';
@@ -19,8 +18,6 @@ var $main = function() {
   }
 
   coverImg.on('change', function() {
-    console.log($(this).val());
-
     if($(this).val() === 'Upload Your Own Cover ... Coming Soon :)') {
       addImageUploadForm();
     } else {

@@ -1,0 +1,10 @@
+html, body{
+  background-image: url("../img/agnon_library.jpg");
+  background-position: center;
+  background-size: 100%;
+  height: 100%;
+}
+
+ #register-panel{
+  padding-top: 20px;
+ }

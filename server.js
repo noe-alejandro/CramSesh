@@ -11,7 +11,23 @@ var LocalStrategy = require('passport-local').Strategy;
 var mongo = require('mongodb');
 var mongoose = require('mongoose');
 var redis = require("redis");
+var multer = require('multer');
+
+var cloudinary = require('cloudinary');
+
 var redisClient;
+
+// Initiate Multer
+var storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, 'temp_files/')
+  },
+  filename: function (req, file, cb) {
+    cb(null, file.originalname)
+  }
+});
+
+var upload = multer({ storage : storage });
 
 // Initiate Application
 var app = express();
@@ -99,7 +115,7 @@ app.use(function (req, res, next) {
 });
 
 // Connecting Routes
-require('./app/routes.js')(app, passport, LocalStrategy, io, redisClient);
+require('./app/routes.js')(app, passport, LocalStrategy, io, redisClient, upload, cloudinary);
 
 // Server started listening on port 3000
 server.listen(port, function() {

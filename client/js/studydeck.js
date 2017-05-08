@@ -28,8 +28,8 @@ var $main = function() {
       }
 
 
-       $('.js-flickity').on( 'scroll.flickity', function( event, progress ) {
-         $('#currentCard').html(flkty.selectedIndex);
+      $('.js-flickity').on( 'scroll.flickity', function( event, progress ) {
+       $('#currentCard').html(flkty.selectedIndex);
       });
 
       // FLIP ALGORITHM

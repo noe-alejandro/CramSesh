@@ -28,10 +28,14 @@ var $main = function() {
         $('.js-flickity').flickity('insert', $insertCell, i + 1);
       }
 
+      $('.js-flickity').on( 'scroll.flickity', function(event, progress) {
+       $('#currentCard').html(flkty.selectedIndex);
+      });
+
+
       // **** FLIP ALGORITHM
       $('#flipcard-btn').on('click', function() {
         var notecardIndex = flkty.selectedIndex - 1;
-        console.log(notecardIndex);
         if(notecardIndex === -1) {
           console.log('Cannot flip this card!');
         }
@@ -76,20 +80,14 @@ var $main = function() {
         var back = data.cards[notecardIndex].back;
         var cardID = data.cards[notecardIndex]._id;
         var deckID = data._id;
-
-
-        console.log(cardID);
-        console.log(deckID);
         var side;
 
         if(front === text) {
-          console.log("This is the front");
           $('#side').empty();
           $('#side').html('front');
           side = "front";
         }
         else if(back === text) {
-          console.log("this is the back");
           $('#side').empty();
           $('#side').html('back');
           side = "back";
@@ -105,8 +103,6 @@ var $main = function() {
           $('#editcard-form').hide(1000);
 
           var newCardInfo = $('#newcardinfo').val();
-          console.log(newCardInfo);
-          console.log("card side: " + side);
 
           var newCardData = {
             "deckID" : deckID,
@@ -114,8 +110,6 @@ var $main = function() {
             "side" : side,
             "newInfo" : newCardInfo
           };
-
-          console.log(newCardData);
 
           // Send the data for the updated card to the server.
           $.ajax({
@@ -125,7 +119,6 @@ var $main = function() {
             contentType : 'application/json',
             dataType : 'json',
             success : function(newCardData) {
-              console.log(newCardData);
               // Re-fresh the page
               window.location.reload();
             }
@@ -138,7 +131,6 @@ var $main = function() {
 
         // Get the deck id
         var deckID = data._id;
-        console.log(deckID);
 
         // show form for new card
         $('#addnewcard-form').show(2000);
@@ -147,8 +139,6 @@ var $main = function() {
 
           var front = $('#newFront').val();
           var back = $('#newBack').val();
-
-          console.log(deckID);
 
           var createNewCardData = {
             "deckID" : deckID,
@@ -178,14 +168,11 @@ var $main = function() {
 
         // Get the slide / card index
         var notecardIndex = flkty.selectedIndex - 1;
-        console.log(notecardIndex);
 
         var cardID = data.cards[notecardIndex]._id;
-        console.log(cardID);
 
         // Get the deck id
         var deckID = data._id;
-        console.log(deckID);
 
         var deleteDeckID = {
           "deckID" : deckID,
@@ -200,8 +187,6 @@ var $main = function() {
           contentType : 'application/json',
           dataType : 'json',
           success : function(data) {
-
-            console.log(data.cardDelete);
             // Re-fresh the page
             window.location.reload();
           }

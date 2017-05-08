@@ -1,19 +1,18 @@
-#subjectNameColor{
+#subjectNameColor {
   color: #2247E1;
 }
 
-#frontarea{
-  background-image: url('../img/notecard_white.jpeg');
+#frontarea, #backarea {
+  background-image: url("../img/white_notecard.png");
+  background-repeat: no-repeat;
+  background-size: 100%;
+  background-position: center;
+  width: 100%;
+  height: 300px;
+  border: none;
   font-weight: bold;
   font-size: 20px;
-  border: none;
-}
-
-#backarea {
-  background-image: url('../img/notecard_white.jpeg');
-  font-weight: bold;
-  font-size: 20px;
-  border: none;
+  line-height: 150%;
 }
 
 #newCardText {

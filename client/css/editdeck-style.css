@@ -16,7 +16,7 @@
 }
 
 .gallery-cell {
-  background-image: url("../img/notecard_white.jpeg");
+  background-image: url("../img/white_notecard.png");
   background-repeat: no-repeat;
   background-size: contain;
   background-position: center;
@@ -31,7 +31,7 @@
 }
 
 #newcardinfo, #newFront, #newBack {
-  background-image: url('../img/notecard_white.jpeg');
+  background-image: url("../img/white_notecard.png");
   background-repeat: no-repeat;
   background-size: contain;
   background-position: center;

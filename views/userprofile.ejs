@@ -9,7 +9,7 @@
     <meta name="description" content="flashcard-application">
     <meta name="author" content="noerojas">
 
-    <title>Cram-Sesh</title>
+    <title>CramSesh</title>
 
     <!-- Bootstrap core CSS -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -53,7 +53,9 @@
       </div>
     </nav>
 
-    <div class="wrapper">
+
+    <div id="wrapper">
+      <!-- Sidebar -->
       <div id="sidebar-wrapper">
         <ul class="sidebar-nav">
           <li class="sidebar-brand">
@@ -91,16 +93,21 @@
           </li>
         </ul>
       </div>
-      <div class="page-content-wrapper">
+      <div id="page-content-wrapper">
         <div class="container-fluid">
+
           <div class="col-md-12 main">
             <h1 class="page-header">Profile</h1>
-
-            <a href="#menu-toggle" class="btn btn-default" id="menu-toggle">Toggle Menu</a>
-
             <div class="row">
               <div class="col-md-4">
-                <img src="img/emptyprofile.jpeg" alt="profile-picture" class="img-circle">
+                <img id="profile-pic-img" alt="profile-picture" class="img-circle" width="200" height="200"><br><br>
+                <form class="form-line" action="/uploadimage" method="POST" enctype="multipart/form-data">
+                  <div class="form-group">
+                    <label for="upload-image">Select A Profile Image</label>
+                    <input type="file" name="upload-image" id="upload-image">
+                  </div>
+                  <button type="submit" class="btn btn-primary btn-sm" id="submitImage">Upload</button>
+                </form>
               </div>
               <div id="userInfo" class="col-md-6">
                 <p class="lead">Name : <span id="fullname"></span></p>
@@ -109,9 +116,11 @@
               </div>
             </div>
           </div>
+
         </div>
       </div>
     </div>
+
     <script
       src="https://code.jquery.com/jquery-3.1.1.js"
       integrity="sha256-16cdPddA6VdVInumRGo6IbivbERE8p7CQR3HzTBuELA="
@@ -119,6 +128,7 @@
     </script>
     <script src="js/bootstrap.min.js"></script>
     <script src="js/userprofile.js"></script>
+
     <script src="js/sidebar.js"></script>
 
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->

@@ -9,8 +9,6 @@ var $main = function () {
 
       var len = data.data.length;
 
-      console.log(data.data);
-
       for(var i = 0; i < len; ++i) {
         var tableRowBegin = '<tr id="deck' + i + '">';
         var tableSubject = '<td class="subjectList">' + data.data[i].subject + '</td>';
@@ -40,9 +38,6 @@ var $main = function () {
         $('#' + tableRow).hide('slow', function() {
           $('#' + tableRow).remove();
         });
-
-        console.log(deckID);
-        console.log(typeof(deckID));
 
         var data = {"deckID" : deckID};
 

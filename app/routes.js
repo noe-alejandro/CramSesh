@@ -1,7 +1,9 @@
-module.exports = function(app, passport, LocalStrategy, io, redisClient) {
+module.exports = function(app, passport, LocalStrategy, io, redisClient, upload, cloudinary) {
 
   var User = require('./models/user');
   var Deck = require('./models/flashcards.js');
+  var fs = require('fs');
+
   var subjectName;
   var deckID;
 
@@ -47,30 +49,6 @@ module.exports = function(app, passport, LocalStrategy, io, redisClient) {
       res.redirect('/users/login');
     }
   }
-
-// ****************************************************************************
-// ************************** BEGINNING OF TESTING ****************************
-// ****************************************************************************
-
-  // edit subject (deck) name
-  app.get('/editdeckname', function(req, res) {
-
-    var deckID = "58db5115eafb710e03af64b4";
-
-    var newSubjectName = "You Bitch Made";
-
-    Deck.updateDeckName(deckID, newSubjectName, function(err, data) {
-      if(err) {
-        console.log(err);
-      } else {
-        console.log(data);
-      }
-    });
-  });
-
-// ****************************************************************************
-// *************************** END OF TESTING *********************************
-// ****************************************************************************
 
 // ****************************************************************************
 // *********************** BEGINNING OF HTTP GET ROUTES ***********************
@@ -162,16 +140,11 @@ module.exports = function(app, passport, LocalStrategy, io, redisClient) {
   });
 
   app.get('/getusername', ensureAuthenticated, function(req, res) {
-    res.send({"username" : req.user.username});
-  });
-
-  app.get('/getuserprofile', ensureAuthenticated, function(req, res) {
-    var userProfile = {
-      "name" : req.user.full_name,
-      "username" : req.user.username,
-      "email" : req.user.email
-    };
-    res.send({"data" : userProfile});
+    res.send(
+      {
+        "username" : req.user.username,
+        "profileImage" : req.user.profile_pic
+      });
   });
 
   app.get('/logout', function(req, res) {
@@ -228,13 +201,20 @@ module.exports = function(app, passport, LocalStrategy, io, redisClient) {
   app.post('/contactteam', function(req, res) {
 
     var name = req.body.name;
-    var mess = req.body.mess;
-
-    console.log("Contact form message coming from: " + name);
+    var email = req.body.email;
+    var userMessage = req.body.userMessage;
+    console.log('*************************');
+    console.log('****** New Message ******');
+    console.log('*************************');
+    console.log('From: ' + name);
     console.log('Email:' + email);
-    console.log("message text: " + userMessage);
+    console.log('Message Text: ' + userMessage);
+    console.log('*************************');
+    console.log('***** End of Message ****');
+    console.log('*************************');
 
-    req.flash('success_msg', 'Your message has been sent. Please wait 24 hours for a response.');
+
+    req.flash('success_msg', 'Your message has been sent. Please wait 24 hours for an email response.');
     res.redirect('/contact');
   });
 
@@ -449,6 +429,59 @@ module.exports = function(app, passport, LocalStrategy, io, redisClient) {
     }
   });
 
+  app.post('/getuserprofile', ensureAuthenticated, function(req, res) {
+    var userProfile = {
+      "name" : req.user.full_name,
+      "username" : req.user.username,
+      "email" : req.user.email,
+      "profilePic" : req.user.profile_pic
+    };
+    res.send({"data" : userProfile});
+  });
+
+  app.post('/uploadimage', upload.any(), function(req, res) {
+
+    // GET THE NAME OF THE FILE THAT WAS UPLOADED
+    var imageName = req.files[0].originalname;
+    console.log(imageName);
+
+    var imagePath = './temp_files/' + imageName;
+    console.log(imagePath);
+
+    //upload the new image
+    cloudinary.uploader.upload(imagePath, function(result)
+    {
+      console.log(result);
+      console.log('cloudinary result url: ' + result.url);
+
+      //update mongoDB profile_pic for the user
+      var username = req.user.username;
+      User.updateProfilePic(username, function(err, data) {
+        if(err) {
+          console.log(err);
+        } else {
+
+          data.profile_pic = result.url;
+
+          data.save(function(err) {
+            if(err) {
+              console.log(err);
+            } else {
+              console.log('profile pic has been saved!');
+            }
+          });
+        }
+      });
+    },
+    { public_id: req.user.username }
+    );
+
+    // delete the image from the server
+    fs.unlink(imagePath);
+
+    res.redirect('/profile');
+  });
+
   app.post('/users/register', function(req, res) {
 
     var fullname = req.body.fullname;
@@ -457,6 +490,7 @@ module.exports = function(app, passport, LocalStrategy, io, redisClient) {
     var username = req.body.username;
     var password = req.body.password;
     var confirmPassword = req.body.confirmPassword;
+    var defaultProfilePic = 'http://res.cloudinary.com/dlsqyyz1p/image/upload/v1493944290/emptyprofile_yf77gi.jpg';
 
     req.checkBody('fullname', 'Full name is required.').notEmpty();
     req.checkBody('email', 'Email is required.').notEmpty();
@@ -482,7 +516,8 @@ module.exports = function(app, passport, LocalStrategy, io, redisClient) {
         full_name: fullname,
         email: email,
         username: username,
-        password: password
+        password: password,
+        profile_pic: defaultProfilePic
       });
 
       User.createUser(newUser, function(err, user) {

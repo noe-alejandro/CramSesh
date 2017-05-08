@@ -8,8 +8,6 @@ $.ajax({
 
       var len = data.data.length;
 
-      console.log(data.data);
-
       for(var i = 0; i < len; ++i) {
         var tableRowBegin = '<tr id="deck' + i + '">';
         var tableSubject = '<td class="subjectList">' + data.data[i].subject + '</td>';

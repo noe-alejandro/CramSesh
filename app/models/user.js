@@ -36,6 +36,10 @@ User.getUserByUsername = function(username, callback){
   User.findOne(query, callback);
 }
 
+User.updateProfilePic = function(username, callback){
+  User.findOne({username: username}, callback);
+}
+
 User.getUserById = function(id, callback){
   User.findById(id, callback);
 }

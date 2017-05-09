@@ -3,7 +3,7 @@ Cram-Sesh
 ### Turning on the Databases in the node-box <br>
 #### In the Vagrant Virutal Machine please type the following commands:
 Turn on MongoDB <br>
-> mkdir -p $HOME/mongodb/data
+> mkdir -p $HOME/mongodb/data <br>
 > $HOME/mongodb/bin/mongod --dbpath=$HOME/mongodb/data
 
 Turn on Redis <br>

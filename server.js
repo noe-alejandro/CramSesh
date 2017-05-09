@@ -29,9 +29,9 @@ var storage = multer.diskStorage({
 
 // Cloudinary Keys
 cloudinary.config({
-  cloud_name: 'your_keys_here...',
-  api_key:'your_keys_here...',
-  api_secret: 'your_keys_here...'
+  cloud_name: 'YOUR KEYS HERE',
+  api_key:'YOUR KEYS HERE',
+  api_secret: 'YOUR KEY HERE'
 });
 
 var upload = multer({ storage : storage });
@@ -47,6 +47,7 @@ app.use(flash());
   $  mkdir -p $HOME/mongodb/data
   $  $HOME/mongodb/bin/mongod --dbpath=$HOME/mongodb/data
 */
+
 // MongoDB  Connection
 mongoose.connect('mongodb://localhost/CramSesh');
 var db = mongoose.connection;
